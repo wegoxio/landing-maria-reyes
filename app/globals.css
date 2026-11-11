@@ -1,26 +1,239 @@
 @import "tailwindcss";
 
+/*
+ * Sistema visual de María M. Reyes.
+ * Editable desde aquí: paleta, tipografías y ritmo.
+ */
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+  /* Papel */
+  --paper: #f5ede3;
+  --paper-light: #faf6f1;
+  --paper-deep: #ebe0d4;
+  --paper-edge: #ded1c2;
+
+  /* Tinta */
+  --ink: #2a1f1a;
+  --ink-soft: #3a2f2b;
+  --taupe: #8c8073;
+
+  /* Acento */
+  --rust: #c4694a;
+  --rust-soft: #d4866a;
+
+  /* Navegación */
+  --nav-ink: #5c4840;
+  --nav-bg: rgba(250, 246, 241, 0.92);
+
+  /* Profundos */
+  --petrol: #18252d;
+  --umber: #2a1f1a;
+
+  /*
+   * Degradado de marca (10 paradas).
+   * Terracota → arena → gris azulado → rosa → crema.
+   */
+  --brand-gradient: linear-gradient(
+    90deg,
+    #c4694a 0%,
+    #d4866a 11.1%,
+    #c47a7a 22.2%,
+    #c8ac88 33.3%,
+    #dfc9a8 44.4%,
+    #a8bfcf 55.6%,
+    #7a8fa0 66.7%,
+    #d9a9a0 77.8%,
+    #e8b49a 88.9%,
+    #e8c8be 100%
+  );
+
+  --hairline: rgba(42, 31, 26, 0.16);
+  --hairline-soft: rgba(42, 31, 26, 0.09);
 }
 
 @theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
+  --color-paper: var(--paper);
+  --color-paper-light: var(--paper-light);
+  --color-paper-deep: var(--paper-deep);
+  --color-paper-edge: var(--paper-edge);
+  --color-ink: var(--ink);
+  --color-ink-soft: var(--ink-soft);
+  --color-taupe: var(--taupe);
+  --color-rust: var(--rust);
+  --color-rust-soft: var(--rust-soft);
+  --color-nav-ink: var(--nav-ink);
+  --color-nav-bg: var(--nav-bg);
+  --color-petrol: var(--petrol);
+  --color-umber: var(--umber);
+
+  /*
+   * Tipografías.
+   * Cormorant Garamond para todo el texto; Jost solo para la navegación.
+   */
+  --font-display: var(--font-cormorant);
+  --font-body: var(--font-cormorant);
+  --font-label: var(--font-cormorant);
+  --font-nav: var(--font-jost);
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
+html {
+  scroll-behavior: smooth;
 }
 
 body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  background-color: var(--paper);
+  color: var(--ink);
+  font-family: var(--font-cormorant), Georgia, serif;
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+}
+
+::selection {
+  background: var(--rust);
+  color: var(--paper);
+}
+
+/* Monograma fantasma: contorno sin relleno */
+.ghost-outline {
+  color: transparent;
+  -webkit-text-stroke: 1px rgba(245, 236, 227, 0.26);
+}
+
+/* ---------------------------------------------------------------- */
+/* Animaciones de entrada                                            */
+/* ---------------------------------------------------------------- */
+
+/*
+ * Vía principal: animaciones ligadas al scroll en CSS puro
+ * (animation-timeline: view). Sin JavaScript y sin mediciones.
+ */
+@keyframes mask-scroll-rise {
+  from {
+    transform: translate3d(0, 110%, 0);
+  }
+
+  to {
+    transform: translate3d(0, 0, 0);
+  }
+}
+
+@keyframes reveal-scroll {
+  from {
+    opacity: 0;
+    transform: translate3d(0, 24px, 0);
+  }
+
+  to {
+    opacity: 1;
+    transform: translate3d(0, 0, 0);
+  }
+}
+
+@supports (animation-timeline: view()) {
+  .mask-scroll .mask-line > span {
+    transition: none;
+    animation: mask-scroll-rise linear both;
+    animation-timeline: view();
+    animation-range: entry 0% entry 62%;
+  }
+
+  .mask-scroll .mask-line:nth-child(2) > span {
+    animation-range: entry 5% entry 70%;
+  }
+
+  .mask-scroll .mask-line:nth-child(3) > span {
+    animation-range: entry 10% entry 78%;
+  }
+
+  [data-reveal] {
+    transition: none;
+    animation: reveal-scroll linear both;
+    animation-timeline: view();
+    animation-range: entry 0% entry 52%;
+  }
+}
+
+/*
+ * Vía de respaldo: la aplica el JS cuando el navegador no soporta
+ * animaciones ligadas al scroll. El atributo data-reveal se escribe
+ * solo desde JS, así que sin JS el contenido siempre es visible.
+ */
+[data-reveal] {
+  transition:
+    opacity 720ms cubic-bezier(0.22, 1, 0.36, 1) var(--reveal-delay, 0ms),
+    transform 720ms cubic-bezier(0.22, 1, 0.36, 1) var(--reveal-delay, 0ms);
+}
+
+[data-reveal="hidden"] {
+  opacity: 0;
+  transform: translate3d(0, var(--reveal-y, 24px), 0);
+}
+
+[data-reveal="in"] {
+  opacity: 1;
+  transform: translate3d(0, 0, 0);
+}
+
+/* Líneas que emergen desde una ranura (respaldo por JS) */
+.mask-line > span {
+  transform: translate3d(0, 0, 0);
+  transition: transform 900ms cubic-bezier(0.22, 1, 0.36, 1)
+    var(--mask-delay, 0ms);
+}
+
+.mask-pending .mask-line > span {
+  transform: translate3d(0, 110%, 0);
+}
+
+.mask-visible .mask-line > span {
+  transform: translate3d(0, 0, 0);
+}
+
+/* Entrada por CSS puro: funciona aunque el JS no se ejecute */
+.mask-load .mask-line > span {
+  transition: none;
+  animation: mask-rise 900ms cubic-bezier(0.22, 1, 0.36, 1) both;
+  animation-delay: var(--mask-delay, 0ms);
+}
+
+@keyframes mask-rise {
+  from {
+    transform: translate3d(0, 110%, 0);
+  }
+
+  to {
+    transform: translate3d(0, 0, 0);
+  }
+}
+
+.reveal-load {
+  animation: fade-up 720ms cubic-bezier(0.22, 1, 0.36, 1) both;
+  animation-delay: var(--reveal-delay, 0ms);
+}
+
+@keyframes fade-up {
+  from {
+    opacity: 0;
+    transform: translate3d(0, 18px, 0);
+  }
+
+  to {
+    opacity: 1;
+    transform: translate3d(0, 0, 0);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+
+  .mask-load .mask-line > span,
+  .reveal-load {
+    animation: none;
+  }
+
+  .mask-line > span,
+  [data-reveal] {
+    transition: none;
+  }
 }
