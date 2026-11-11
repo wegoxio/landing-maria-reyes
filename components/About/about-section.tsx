@@ -102,7 +102,7 @@ export function AboutSection({
         ))}
 
         {displayCard ? (
-          <div className="mt-10 rounded-xl bg-black/[0.03] p-6 md:p-8 border-l-2 border-rust max-w-[1100px]">
+          <div className="mt-10 rounded-xl bg-black/[0.03] p-6 md:p-8 border-l-2 border-rust max-w-full">
             <div className="flex flex-col gap-y-4">
               {disciplines.map((discipline, index) => (
                 <RevealOnScroll key={discipline.name} delayMs={60 + index * 50}>
