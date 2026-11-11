@@ -17,11 +17,11 @@ export default function AboutPage() {
         id="sobre-mi"
         tagline="SOBRE MÍ"
         showTaglineLine={true}
-        darkBackground={true} // <-- Aquí activas el fondo oscuro y degradados solo para esta página
+        darkBackground={true}
         backgroundWatermark="MCRG"
         lines={[
           <span key="1">Conoce mi trabajo</span>,
-          <span key="2" className="italic text-[#C4694A]">
+          <span key="2" className="italic text-rust">
             y mi trayectoria
           </span>,
         ]}
@@ -36,6 +36,7 @@ export default function AboutPage() {
             variant: "solid",
           },
         ]}
+        className="rounded-sm"
       />
 
       <HeroMediaBand
@@ -75,7 +76,8 @@ export default function AboutPage() {
         actionType="download"
         actionHref="/files/cv-maria-del-carmen.pdf"
         actionLabel="Descarga mi currículum"
-        showActionIcon={true} // <-- Aquí activas el círculo con el icono solo para esta página
+        showActionIcon={true}
+        classNameAction="rounded-sm"
       />
       <LanguagesSection />
       <TrajectorySection />

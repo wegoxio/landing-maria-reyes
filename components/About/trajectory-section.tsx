@@ -38,7 +38,7 @@ const DEFAULT_ITEMS: TrajectoryItem[] = [
     title: "Desde la mirada a la materia",
     description:
       "Escultura y fotografía se complementan: una construye volúmenes y la otra registra la luz. Dos maneras de explorar lo tangible y lo efímero desde una misma sensibilidad.",
-    dotColor: "bg-[#C4694A]/80",
+    dotColor: "bg-rust/80",
   },
 ];
 
@@ -67,7 +67,7 @@ export function TrajectorySection({
             <p className="font-label text-[11px] tracking-[0.26em] text-rust uppercase">
               {tagline}
             </p>
-            <GradientRule className="h-px! flex-1 max-w-22.5 " />
+            <GradientRule className="h-px! max-w-22.5 " />
           </div>
           <GradientRule className="h-2! mt-4 max-w-37.5 rounded-2xl" />
         </RevealOnScroll>

@@ -68,7 +68,6 @@ export function PlatformSection() {
       className="w-full bg-paper pt-16 pb-16 md:pt-20 md:pb-20"
     >
       <div className="mx-auto w-full max-w-full px-6 md:px-11">
-        {/* Cabecera inicial de Escultura */}
         <div className="flex flex-col items-center text-center">
           <RevealOnScroll>
             <p className="font-label text-[11px] tracking-[0.26em] text-rust uppercase">
@@ -95,8 +94,6 @@ export function PlatformSection() {
             </p>
           </RevealOnScroll>
         </div>
-
-        {/* Grid de Colección Esculturas */}
         <div
           id="escultura"
           className="mt-12 grid gap-5 sm:grid-cols-2 lg:grid-cols-3 lg:gap-6"
@@ -143,10 +140,7 @@ export function PlatformSection() {
             Ver colección de esculturas
           </a>
         </RevealOnScroll>
-
-        {/* SECCIÓN DE FOTOGRAFÍA (Textos arriba, imagen centrada y descripciones abajo) */}
         <div className="mt-20 md:mt-28">
-          {/* Cabecera de Fotografía */}
           <RevealOnScroll>
             <div className="max-w-[700px]">
               <p className="font-label text-[12px] tracking-[0.24em] text-rust uppercase">
@@ -177,7 +171,6 @@ export function PlatformSection() {
                 />
               </div>
 
-              {/* Contenedor con los textos cercanos */}
               <div className="mt-3 flex flex-wrap items-center gap-x-8 gap-y-1 text-[12px] tracking-[0.15em] font-label uppercase">
                 <span className="text-rust">UTAH &nbsp;·&nbsp; 2022</span>
                 <span className="text-taupe text-[12px] tracking-normal">

@@ -22,7 +22,8 @@ interface AboutSectionProps {
   actionType?: "link" | "download";
   actionHref?: string;
   actionLabel?: string;
-  showActionIcon?: boolean; // <-- Prop nueva para mostrar u ocultar el icono del círculo
+  showActionIcon?: boolean;
+  classNameAction?: string;
 }
 
 const DEFAULT_DISCIPLINES: DisciplineItem[] = [
@@ -56,7 +57,8 @@ export function AboutSection({
   actionType = "link",
   actionHref = "/sobre-mi",
   actionLabel = "Saber más",
-  showActionIcon = false, // Por defecto en falso para que no afecte la página principal
+  showActionIcon = false,
+  classNameAction = "",
 }: AboutSectionProps) {
   return (
     <section id={id} className="w-full bg-paper-light pt-16 md:pt-20">
@@ -147,7 +149,7 @@ export function AboutSection({
             <a
               href={actionHref}
               download
-              className="mt-10 flex h-14 w-full max-w-[320px] items-center justify-between px-6 font-label text-[11px] tracking-[0.24em] text-ink uppercase transition-colors duration-300 hover:bg-ink hover:text-paper md:mt-12"
+              className={`mt-10 flex h-14 w-full max-w-[320px] items-center justify-between px-6 font-label text-[11px] tracking-[0.24em] text-ink uppercase transition-colors duration-300 hover:bg-ink hover:text-paper md:mt-12 ${classNameAction}`}
               style={{ border: "1px solid rgba(27, 20, 16, 0.22)" }}
             >
               <span>{actionLabel}</span>
@@ -172,7 +174,7 @@ export function AboutSection({
           ) : (
             <Link
               href={actionHref}
-              className="mt-10 flex h-14 w-full items-center justify-between px-6 font-label text-[11px] tracking-[0.24em] text-ink uppercase transition-colors duration-300 hover:bg-ink hover:text-paper md:mt-12"
+              className={`mt-10 flex h-14 w-full items-center justify-between px-6 font-label text-[11px] tracking-[0.24em] text-ink uppercase transition-colors duration-300 hover:bg-ink hover:text-paper md:mt-12 ${classNameAction}`}
               style={{ border: "1px solid rgba(27, 20, 16, 0.22)" }}
             >
               <span>{actionLabel}</span>

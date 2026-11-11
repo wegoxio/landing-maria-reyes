@@ -31,7 +31,7 @@ const DEFAULT_ITEMS: LanguageItem[] = [
     title: "Fotografía",
     description:
       "La fotografía me enseñó a observar con atención, a encuadrar, a leer la luz. El instante que se vuelve permanente.",
-    lineColor: "bg-[#C4694A]",
+    lineColor: "bg-rust",
   },
 ];
 
@@ -57,7 +57,7 @@ export function LanguagesSection({
             <p className="font-label text-[11px] tracking-[0.26em] text-rust uppercase">
               {tagline}
             </p>
-            <span className="h-px flex-1 bg-ink/12 max-w-22.5" />
+            <GradientRule className="h-px! flex-1 bg-ink/12 max-w-22.5" />
           </div>
           <GradientRule className="h-2! mt-4 max-w-37.5 rounded-2xl" />
         </RevealOnScroll>

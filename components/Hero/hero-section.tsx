@@ -1,9 +1,7 @@
 import React, { ReactNode } from "react";
 import Image from "next/image";
 import { MaskedLines } from "@/components/Animations/masked-lines";
-import { CONTACT_LINKS } from "@/components/Common/contact-links";
 import type { HashHref } from "@/components/Common/hash-href";
-import { GradientRule } from "../Common/gradient-rule";
 
 export type HeroAction =
   | {
@@ -31,10 +29,10 @@ interface HeroSectionProps {
   backgroundWatermark?: string;
   darkBackground?: boolean;
   gradientRule?: ReactNode;
+  className?: string;
 }
 
 const DEFAULT_ACTIONS: HeroAction[] = [
-  { kind: "external", href: CONTACT_LINKS.whatsapp, label: "Contacto" },
   { kind: "hash", href: "#escultura", label: "Escultura" },
   { kind: "hash", href: "#fotografia", label: "Fotografía" },
 ];
@@ -59,6 +57,7 @@ export function HeroSection({
   backgroundWatermark,
   darkBackground = false,
   gradientRule = undefined,
+  className = "",
 }: HeroSectionProps) {
   return (
     <section
@@ -82,13 +81,13 @@ export function HeroSection({
         <div className="md:pb-20">
           <p
             className={`flex items-center font-label text-[11px] tracking-[0.26em] uppercase md:text-[12px] ${
-              darkBackground ? "text-[#C4694A]" : "text-rust"
+              darkBackground ? "text-rust" : "text-rust"
             }`}
           >
             {showTaglineLine && (
               <span
                 className={`mr-4 inline-block h-px w-9 ${
-                  darkBackground ? "bg-[#C4694A]/60" : "bg-rust/60"
+                  darkBackground ? "bg-rust/60" : "bg-rust/60"
                 }`}
               />
             )}
@@ -117,9 +116,9 @@ export function HeroSection({
             {actions.map((action) => {
               const isSolid = action.variant === "solid";
               const buttonStyles = isSolid
-                ? "bg-[#C4694A] text-white border-[#C4694A] hover:bg-[#C4694A]/90"
+                ? "bg-rust text-white border-rust hover:bg-rust/90"
                 : darkBackground
-                  ? "border-white/30 text-white hover:border-[#C4694A] hover:bg-[#C4694A] hover:text-white"
+                  ? "border-white/30 text-white hover:border-rust hover:bg-rust hover:text-white"
                   : "border-ink/25 text-ink hover:border-rust hover:bg-rust hover:text-paper";
 
               return (
@@ -132,7 +131,7 @@ export function HeroSection({
                       ? "noopener noreferrer"
                       : undefined
                   }
-                  className={`inline-flex h-10 items-center justify-center rounded-full border px-6 font-label text-[11px] tracking-[0.2em] uppercase transition-colors duration-300 ${buttonStyles}`}
+                  className={`inline-flex h-10 items-center rounded-full justify-center border px-6 font-label text-[11px] tracking-[0.2em] uppercase transition-colors duration-300 ${buttonStyles} ${className}`}
                 >
                   {action.label}
                 </a>

@@ -18,7 +18,7 @@ const NAV_CLASS_NAME =
   "font-nav text-[12px] tracking-[0.2em] text-nav-ink uppercase transition-colors hover:text-rust";
 
 const PROJECTS_MENU = [
-  { hash: "#escultura", label: "Escultura" },
+  { hash: "/sculptures", label: "Escultura" },
   { hash: "#fotografia", label: "Fotografía" },
 ];
 
@@ -48,7 +48,7 @@ export function HeroHeader({
       className={`fixed inset-x-0 top-0 z-[9999] bg-nav-bg backdrop-blur-md transition-shadow duration-300 ${
         hasScrolled
           ? "border-b border-ink/10 shadow-[0_10px_30px_rgba(42,31,26,0.07)]"
-          : "border-b border-[#C4694A1F]"
+          : "border-b border-rust/12"
       }`}
     >
       <div className="mx-auto flex h-[76px] w-full items-center justify-between px-6 md:h-[92px] md:px-11">

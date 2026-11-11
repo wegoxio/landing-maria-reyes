@@ -1,12 +1,13 @@
-import React from "react";
+import React, { ReactNode } from "react";
 import Image from "next/image";
 import { ParallaxLayer } from "@/components/Animations/parallax-layer";
 
 interface HeroMediaBandProps {
   imageSrc?: string;
   imageAlt?: string;
-  heightClass?: string; // Ejemplo: "h-[86vh] md:h-[92vh]"
-  backgroundColor?: string; // Ejemplo: "bg-white" o un color personalizado
+  heightClass?: string;
+  backgroundColor?: string;
+  gradientRule?: ReactNode;
 }
 
 export function HeroMediaBand({
@@ -14,6 +15,7 @@ export function HeroMediaBand({
   imageAlt = "Escultura de María del Carmen Reyes Garrido",
   heightClass = "h-[86vh] min-h-[520px] md:h-[92vh]",
   backgroundColor = "bg-white",
+  gradientRule,
 }: HeroMediaBandProps) {
   return (
     <section className={`w-full overflow-hidden ${backgroundColor}`}>
@@ -34,6 +36,7 @@ export function HeroMediaBand({
           </div>
         </div>
       </ParallaxLayer>
+      {gradientRule && <div>{gradientRule}</div>}
     </section>
   );
 }
