@@ -6,15 +6,12 @@ import { HeroHeader } from "./hero-header";
 import { OPEN_HERO_MENU_EVENT } from "./hero-menu-events";
 
 type HeroShellProps = {
-  /** Prefijo de las anclas: "" en el home, "/" en el resto de páginas. */
-  hashPrefix?: string;
   /** Segunda línea del logotipo. */
   subtitle?: string;
   subtitleVariant?: "italic" | "caps";
 };
 
 export function HeroShell({
-  hashPrefix = "",
   subtitle,
   subtitleVariant = "italic",
 }: HeroShellProps) {
@@ -37,7 +34,6 @@ export function HeroShell({
       <HeroHeader
         isMenuOpen={isMenuOpen}
         onToggleMenu={() => setIsMenuOpen((current) => !current)}
-        hashPrefix={hashPrefix}
         subtitle={subtitle}
         subtitleVariant={subtitleVariant}
       />
@@ -45,7 +41,6 @@ export function HeroShell({
       <HeroFullscreenMenu
         isOpen={isMenuOpen}
         onClose={() => setIsMenuOpen(false)}
-        hashPrefix={hashPrefix}
       />
     </>
   );

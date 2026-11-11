@@ -7,14 +7,11 @@ import { CONTACT_LINKS } from "@/components/Common/contact-links";
 type HeroFullscreenMenuProps = {
   isOpen: boolean;
   onClose: () => void;
-  /** Prefijo de las anclas: "" en el home, "/" en el resto de páginas. */
-  hashPrefix?: string;
 };
 
 export function HeroFullscreenMenu({
   isOpen,
   onClose,
-  hashPrefix = "",
 }: HeroFullscreenMenuProps) {
   useEffect(() => {
     if (!isOpen) {
@@ -53,7 +50,7 @@ export function HeroFullscreenMenu({
 
       <nav className="flex flex-1 flex-col justify-center gap-8 px-5">
         <Link
-          href={`${hashPrefix}#about`}
+          href="#about"
           onClick={onClose}
           className="font-display text-[42px] leading-none font-light text-paper"
         >
@@ -61,7 +58,7 @@ export function HeroFullscreenMenu({
         </Link>
 
         <Link
-          href={`${hashPrefix}#servicios`}
+          href="#servicios"
           onClick={onClose}
           className="font-display text-[42px] leading-none font-light text-paper"
         >

@@ -9,8 +9,6 @@ import { SmoothScrollLink } from "@/components/Common/smooth-scroll-link";
 type HeroHeaderProps = {
   isMenuOpen: boolean;
   onToggleMenu: () => void;
-  /** Prefijo de las anclas: "" en el home, "/" en el resto de páginas. */
-  hashPrefix?: string;
   /** Segunda línea del logotipo. */
   subtitle?: string;
   subtitleVariant?: "italic" | "caps";
@@ -27,7 +25,6 @@ const PROJECTS_MENU = [
 export function HeroHeader({
   isMenuOpen,
   onToggleMenu,
-  hashPrefix = "",
   subtitle,
   subtitleVariant = "italic",
 }: HeroHeaderProps) {
@@ -63,10 +60,7 @@ export function HeroHeader({
         </Link>
 
         <nav className="hidden items-center gap-10 md:flex">
-          <SmoothScrollLink
-            href={`${hashPrefix}#about`}
-            className={NAV_CLASS_NAME}
-          >
+          <SmoothScrollLink href="#about" className={NAV_CLASS_NAME}>
             Sobre mí
           </SmoothScrollLink>
 
@@ -93,7 +87,7 @@ export function HeroHeader({
                 {PROJECTS_MENU.map((item) => (
                   <SmoothScrollLink
                     key={item.hash}
-                    href={`${hashPrefix}${item.hash}`}
+                    href={item.hash}
                     className="block px-5 py-2.5 font-label text-[11px] tracking-[0.18em] text-ink/80 uppercase transition-colors hover:bg-paper-deep hover:text-rust"
                   >
                     {item.label}

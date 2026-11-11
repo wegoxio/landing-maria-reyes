@@ -73,13 +73,11 @@ app/
   page.tsx              # Home: compone las secciones en orden
   globals.css           # Tokens, animaciones y estilos base
   icon.svg              # Favicon
-  privacidad/page.tsx   # /privacidad
-  terminos/page.tsx     # /terminos
 components/
   About/                # "Sobre mí" de la landing
   Animations/           # Primitivas de movimiento (ver abajo)
   BecomePartner/        # Bloque "¿Tienes algo en mente? / ¡Hablemos!"
-  Common/               # Piezas compartidas (logotipo, enlaces, reglas, legales)
+  Common/               # Piezas compartidas (logotipo, enlaces, reglas)
   Footer/               # Pie de página
   Hero/                 # Cabecera, portada, banda con la cita y franja a sangre
   Platform/             # Servicios: colección de esculturas y bloque de fotografía
@@ -149,8 +147,6 @@ export const CONTACT_LINKS = {
 | Ruta | Descripción |
 | --- | --- |
 | `/` | Landing principal |
-| `/privacidad` | Política de privacidad |
-| `/terminos` | Términos y condiciones |
 
 ## Despliegue
 
