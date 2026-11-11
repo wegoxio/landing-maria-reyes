@@ -48,7 +48,7 @@ export function HeroHeader({
       className={`fixed inset-x-0 top-0 z-[9999] bg-nav-bg backdrop-blur-md transition-shadow duration-300 ${
         hasScrolled
           ? "border-b border-ink/10 shadow-[0_10px_30px_rgba(42,31,26,0.07)]"
-          : "border-b border-transparent"
+          : "border-b border-[#C4694A1F]"
       }`}
     >
       <div className="mx-auto flex h-[76px] w-full items-center justify-between px-6 md:h-[92px] md:px-11">
@@ -60,7 +60,7 @@ export function HeroHeader({
         </Link>
 
         <nav className="hidden items-center gap-10 md:flex">
-          <SmoothScrollLink href="#about" className={NAV_CLASS_NAME}>
+          <SmoothScrollLink href="/about" className={NAV_CLASS_NAME}>
             Sobre mí
           </SmoothScrollLink>
 
