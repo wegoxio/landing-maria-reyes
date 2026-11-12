@@ -397,6 +397,13 @@ body {
   transform-origin: left center;
 }
 
+/* La sección activa conserva el subrayado: dice dónde estás sin depender
+   del cursor. */
+.nav-link[aria-current="page"]::after {
+  transform: scaleX(1);
+  transform-origin: left center;
+}
+
 /* ---------------------------------------------------------------- */
 /* Entrada escalonada del menú móvil                                */
 /* ---------------------------------------------------------------- */

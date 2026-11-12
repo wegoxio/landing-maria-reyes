@@ -123,7 +123,7 @@ Además del revelado, `app/globals.css` define:
 | `gradient-rule` | La regla con el degradado se dibuja de izquierda a derecha |
 | `scroll-progress` | Barra de progreso de lectura en la cabecera (`scroll()`) |
 | `ken-burns` | Zoom muy lento en la portada y las bandas a sangre |
-| `nav-link` | Subrayado que se dibuja al pasar el cursor |
+| `nav-link` | Subrayado que se dibuja al pasar el cursor, y fijo en la sección activa |
 | `menu-item` | Entrada escalonada de los enlaces del menú móvil |
 
 Reglas de la casa:
@@ -181,6 +181,21 @@ export const CONTACT_LINKS = {
 | `/about` | Biografía, trayectoria y currículum |
 | `/projects/photography` | Series fotográficas y galería |
 | `/projects/sculptures` | Catálogo de la colección de esculturas |
+
+## Navegación
+
+`components/Common/nav-active-state.ts` decide, a partir de la ruta actual,
+qué sección está activa. Con ella, la cabecera y el menú móvil marcan en
+terracota dónde está el visitante:
+
+| Sección | Estado activo |
+| --- | --- |
+| `/about` | "Sobre mí" en terracota, con subrayado fijo |
+| `/projects/photography` | "Proyectos" en terracota, y "Fotografía" destacado en el desplegable |
+| `/projects/sculptures` | "Proyectos" en terracota, y "Escultura" destacado en el desplegable |
+
+El enlace activo lleva `aria-current="page"`, para que el estado también
+llegue a los lectores de pantalla.
 
 ## Despliegue
 
