@@ -3,6 +3,7 @@ import Image from "next/image";
 import { ParallaxLayer } from "@/components/Animations/parallax-layer";
 
 interface HeroMediaBandProps {
+  /** Imagen a sangre de la banda. */
   imageSrc?: string;
   imageAlt?: string;
   heightClass?: string;
@@ -30,7 +31,7 @@ export function HeroMediaBand({
                 alt={imageAlt}
                 fill
                 sizes="100vw"
-                className="object-contain"
+                className="ken-burns object-contain"
               />
             </div>
           </div>

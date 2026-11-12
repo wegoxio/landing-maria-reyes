@@ -48,21 +48,29 @@ export function HeroFullscreenMenu({
         </button>
       </div>
 
-      <nav className="flex flex-1 flex-col justify-center gap-8 px-5">
+      <nav className="flex flex-1 flex-col justify-center gap-6 px-5">
         <Link
-          href="#about"
+          href="/about"
           onClick={onClose}
-          className="font-display text-[42px] leading-none font-light text-paper"
+          className="menu-item font-display text-[42px] leading-none font-light text-paper"
         >
           Sobre mí
         </Link>
 
         <Link
-          href="#servicios"
+          href="/projects/sculptures"
           onClick={onClose}
-          className="font-display text-[42px] leading-none font-light text-paper"
+          className="menu-item font-display text-[42px] leading-none font-light text-paper"
         >
-          Proyectos
+          Escultura
+        </Link>
+
+        <Link
+          href="/projects/photography"
+          onClick={onClose}
+          className="menu-item font-display text-[42px] leading-none font-light text-paper"
+        >
+          Fotografía
         </Link>
 
         <a
@@ -70,7 +78,7 @@ export function HeroFullscreenMenu({
           target="_blank"
           rel="noopener noreferrer"
           onClick={onClose}
-          className="font-display text-[42px] leading-none font-light text-paper"
+          className="menu-item font-display text-[42px] leading-none font-light text-paper"
         >
           Contacto
         </a>

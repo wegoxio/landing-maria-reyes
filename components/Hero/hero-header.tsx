@@ -15,11 +15,11 @@ type HeroHeaderProps = {
 };
 
 const NAV_CLASS_NAME =
-  "font-nav text-[12px] tracking-[0.2em] text-nav-ink uppercase transition-colors hover:text-rust";
+  "nav-link font-nav text-[12px] tracking-[0.2em] text-nav-ink uppercase transition-colors hover:text-rust";
 
 const PROJECTS_MENU = [
-  { hash: "/sculptures", label: "Escultura" },
-  { hash: "#fotografia", label: "Fotografía" },
+  { hash: "/projects/sculptures", label: "Escultura" },
+  { hash: "/projects/photography", label: "Fotografía" },
 ];
 
 export function HeroHeader({
@@ -118,6 +118,13 @@ export function HeroHeader({
           <span className="block h-px w-4 bg-ink" />
         </button>
       </div>
+
+      {/* Barra de progreso de lectura: sigue el scroll del documento en CSS puro. */}
+      <div
+        aria-hidden
+        className="scroll-progress h-px w-full"
+        style={{ background: "var(--brand-gradient)" }}
+      />
     </header>
   );
 }

@@ -1,9 +1,8 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { HeroFullscreenMenu } from "./hero-fullscreen-menu";
 import { HeroHeader } from "./hero-header";
-import { OPEN_HERO_MENU_EVENT } from "./hero-menu-events";
 
 type HeroShellProps = {
   /** Segunda línea del logotipo. */
@@ -16,18 +15,6 @@ export function HeroShell({
   subtitleVariant = "italic",
 }: HeroShellProps) {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
-
-  useEffect(() => {
-    const onOpenMenu: EventListener = () => {
-      setIsMenuOpen(true);
-    };
-
-    window.addEventListener(OPEN_HERO_MENU_EVENT, onOpenMenu);
-
-    return () => {
-      window.removeEventListener(OPEN_HERO_MENU_EVENT, onOpenMenu);
-    };
-  }, []);
 
   return (
     <>

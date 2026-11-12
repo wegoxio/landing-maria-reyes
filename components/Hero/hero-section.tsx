@@ -28,6 +28,8 @@ interface HeroSectionProps {
   imageAlt?: string;
   backgroundWatermark?: string;
   darkBackground?: boolean;
+  fullBackgroundImage?: boolean;
+  lightTaglineOnDark?: boolean;
   gradientRule?: ReactNode;
   className?: string;
 }
@@ -56,6 +58,8 @@ export function HeroSection({
   imageAlt = "Escultura de María del Carmen Reyes Garrido",
   backgroundWatermark,
   darkBackground = false,
+  fullBackgroundImage = false,
+  lightTaglineOnDark = false,
   gradientRule = undefined,
   className = "",
 }: HeroSectionProps) {
@@ -66,7 +70,7 @@ export function HeroSection({
         darkBackground ? "text-white" : "bg-white text-ink"
       }`}
       style={
-        darkBackground
+        darkBackground && !fullBackgroundImage
           ? {
               backgroundColor: "#12100e",
               backgroundImage: `
@@ -77,23 +81,35 @@ export function HeroSection({
           : undefined
       }
     >
-      <div className="mx-auto grid w-full max-w-full gap-12 px-6 pb-14 md:grid-cols-[1fr_1.1fr] md:items-center md:px-11 md:pb-0">
-        <div className="md:pb-20">
+      {fullBackgroundImage && (
+        <div className="absolute inset-0 z-0">
+          <Image
+            src={imageSrc}
+            alt={imageAlt}
+            fill
+            priority
+            className="ken-burns object-cover object-center"
+          />
+          <div className="absolute inset-0 bg-black/65" />
+        </div>
+      )}
+
+      <div className="relative z-10 mx-auto grid w-full max-w-full gap-12 px-6 pb-14 md:grid-cols-[1fr_1.1fr] md:items-center md:px-11 md:pb-16">
+        <div className="md:pb-10">
           <p
             className={`flex items-center font-label text-[11px] tracking-[0.26em] uppercase md:text-[12px] ${
-              darkBackground ? "text-rust" : "text-rust"
+              lightTaglineOnDark ? "text-white/90" : "text-rust"
             }`}
           >
             {showTaglineLine && (
               <span
                 className={`mr-4 inline-block h-px w-9 ${
-                  darkBackground ? "bg-rust/60" : "bg-rust/60"
+                  lightTaglineOnDark ? "bg-white/70" : "bg-rust/60"
                 }`}
               />
             )}
             {tagline}
           </p>
-
           <MaskedLines
             className={`mt-7 font-display text-[42px] leading-[1.02] font-light sm:text-[54px] md:text-[64px] lg:text-[72px] ${
               darkBackground ? "text-white" : "text-ink"
@@ -106,12 +122,11 @@ export function HeroSection({
 
           <p
             className={`mt-8 max-w-[430px] text-[14px] leading-[1.9] md:text-[15px] ${
-              darkBackground ? "text-[#D1C7BD]/80" : "text-taupe"
+              darkBackground ? "text-[#D1C7BD]/90" : "text-taupe"
             }`}
           >
             {description}
           </p>
-
           <div className="mt-9 flex flex-wrap items-center gap-3">
             {actions.map((action) => {
               const isSolid = action.variant === "solid";
@@ -140,38 +155,42 @@ export function HeroSection({
           </div>
         </div>
 
-        <div className="grid grid-cols-1 grid-rows-1 items-end w-full max-w-120 md:max-w-145 lg:max-w-160 mx-auto h-full">
-          {backgroundWatermark && (
-            <div className="col-start-1 row-start-1 z-0 select-none pointer-events-none pb-2.5">
-              <span
-                className={`font-display text-[150px] sm:text-[190px] md:text-[230px] lg:text-[270px] font-light tracking-tight uppercase leading-none block transform translate-x-[-30%] translate-y-[10%] md:translate-x-[-15%] lg:translate-x-[-10%] ${
-                  darkBackground ? "text-white/4" : "text-ink/[0.03]"
+        {!fullBackgroundImage && (
+          <div className="grid grid-cols-1 grid-rows-1 items-end w-full max-w-120 md:max-w-145 lg:max-w-160 mx-auto h-full">
+            {backgroundWatermark && (
+              <div className="col-start-1 row-start-1 z-0 select-none pointer-events-none pb-2.5">
+                <span
+                  className={`font-display text-[150px] sm:text-[190px] md:text-[230px] lg:text-[270px] font-light tracking-tight uppercase leading-none block transform translate-x-[-30%] translate-y-[10%] md:translate-x-[-15%] lg:translate-x-[-10%] ${
+                    darkBackground ? "text-white/4" : "text-ink/[0.03]"
+                  }`}
+                >
+                  {backgroundWatermark}
+                </span>
+              </div>
+            )}
+
+            <div className="col-start-1 row-start-1 z-10 w-full mb-10 md:mb-16">
+              <div
+                className={`relative aspect-[4/3] w-full overflow-hidden ${
+                  darkBackground ? "bg-transparent" : "bg-white"
                 }`}
               >
-                {backgroundWatermark}
-              </span>
-            </div>
-          )}
-
-          <div className="col-start-1 row-start-1 z-10 w-full mb-10 md:mb-16">
-            <div
-              className={`relative aspect-[4/3] w-full overflow-hidden ${
-                darkBackground ? "bg-transparent" : "bg-white"
-              }`}
-            >
-              <Image
-                src={imageSrc}
-                alt={imageAlt}
-                fill
-                priority
-                sizes="(max-width: 768px) 90vw, 600px"
-                className="object-contain"
-              />
+                <Image
+                  src={imageSrc}
+                  alt={imageAlt}
+                  fill
+                  priority
+                  sizes="(max-width: 768px) 90vw, 600px"
+                  className="ken-burns object-contain"
+                />
+              </div>
             </div>
           </div>
-        </div>
+        )}
       </div>
-      {gradientRule && <div className="w-full max-w-full">{gradientRule}</div>}
+      {gradientRule && (
+        <div className="relative z-10 w-full max-w-full">{gradientRule}</div>
+      )}
     </section>
   );
 }
