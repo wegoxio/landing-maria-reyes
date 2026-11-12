@@ -46,6 +46,7 @@ Todo vive en `app/globals.css`: paleta, tipografías y animaciones.
 | `--taupe` | `#8c8073` | Texto secundario |
 | `--rust` | `#c4694a` | Acento: frases en cursiva, etiquetas y botones |
 | `--rust-soft` | `#d4866a` | Estado hover del acento |
+| `--muted-brown` | `#8c7068` | Etiquetas y migas de pan |
 | `--nav-ink` | `#5c4840` | Letras del navbar |
 | `--nav-bg` | `#faf6f1eb` | Fondo del navbar (crema translúcido) |
 
@@ -71,6 +72,10 @@ Jost con el tono `#5C4840`.
 app/
   layout.tsx            # Layout raíz: <html lang="es">, las dos fuentes y metadatos
   page.tsx              # Home: compone las secciones en orden
+  about/page.tsx        # Biografía, trayectoria y descarga del currículum
+  projects/
+    photography/page.tsx # Series fotográficas y galería de 120 imágenes
+    sculptures/page.tsx  # Catálogo de la colección de esculturas
   globals.css           # Tokens, animaciones y estilos base
   icon.svg              # Favicon
 components/
@@ -81,6 +86,9 @@ components/
   Footer/               # Pie de página
   Hero/                 # Cabecera, portada, banda con la cita y franja a sangre
   Platform/             # Servicios: colección de esculturas y bloque de fotografía
+  project/              # Secciones propias de cada proyecto
+    photography/        # Índice de series y galería
+    sculptures/         # Catálogo y pieza destacada
 ```
 
 Cada sección es un componente independiente que se importa en `app/page.tsx`.
@@ -91,14 +99,32 @@ Cada sección es un componente independiente que se importa en `app/page.tsx`.
 
 | Componente | Qué hace |
 | --- | --- |
+| `reveal-image.tsx` | La imagen asciende desde abajo hasta su sitio al entrar en el viewport |
 | `masked-lines.tsx` | Cada línea del título emerge desde una ranura (`overflow: hidden`) |
 | `reveal-on-scroll.tsx` | Entrada con desplazamiento y fundido |
 | `parallax-layer.tsx` | Capa que se desplaza con el scroll |
+| `observe-reveal.ts` | Utilidad de observación (IntersectionObserver + respaldo) |
+| `supports-scroll-timeline.ts` | Detección de soporte de animaciones ligadas al scroll |
 | `use-reduced-motion.ts` | Detecta `prefers-reduced-motion` |
 
 La vía principal es **CSS puro** (`animation-timeline: view()`), sin JavaScript
 ni mediciones en el navegador. Para navegadores sin soporte, hay un respaldo
 en JavaScript con `IntersectionObserver`.
+
+El revelado de imágenes usa `view-timeline-name`: el marco de la imagen declara
+la línea de tiempo y la capa interior la consume. Así la medición nunca depende
+de una transformación en curso, y el marco puede recortar el contenido sin que
+la posición de la imagen se desplace.
+
+Además del revelado, `app/globals.css` define:
+
+| Animación | Qué hace |
+| --- | --- |
+| `gradient-rule` | La regla con el degradado se dibuja de izquierda a derecha |
+| `scroll-progress` | Barra de progreso de lectura en la cabecera (`scroll()`) |
+| `ken-burns` | Zoom muy lento en la portada y las bandas a sangre |
+| `nav-link` | Subrayado que se dibuja al pasar el cursor |
+| `menu-item` | Entrada escalonada de los enlaces del menú móvil |
 
 Reglas de la casa:
 
@@ -108,25 +134,30 @@ Reglas de la casa:
 
 ## Imágenes
 
-Las imágenes de `public/images/landing/` están **vacías**: son bloques de color
-con el tamaño y el tono de fondo correctos, listos para que las reemplaces
-subiendo tu foto encima con el mismo nombre.
+Las imágenes viven en `public/images/` y se sirven con `next/image`. Hay
+**144 archivos**:
 
-| Archivo | Uso | Proporción |
-| --- | --- | --- |
-| `hero-escultura.jpg` | Escultura de la portada | 3:4 |
-| `band-escultura.jpg` | Escultura junto al panel de la cita | 2:1 |
-| `band-hero.jpg` | Imagen a sangre completa | 16:9 |
-| `coleccion-troias.jpg` | Pieza "Trespíral" de la colección | 4:5 |
-| `coleccion-insight.jpg` | Pieza "Insight" de la colección | 4:5 |
-| `coleccion-wyngs.jpg` | Pieza "Wyngs" de la colección | 4:5 |
-| `fotografia-01.jpg` | Hueco de fotografía 01 | 3:4 |
-| `fotografia-02.jpg` | Hueco de fotografía 02 | 3:4 |
-| `fotografia-03.jpg` | Hueco de fotografía 03 | 3:4 |
+| Carpeta | Contenido |
+| --- | --- |
+| `landing/` | Portada, banda, colección de esculturas y huecos de fotografía |
+| `about/` | Piezas destacadas de la biografía |
+| `project/sculptures/` | Una imagen por obra del catálogo |
+| `project/photography/` | 120 imágenes en 10 series, más la portada de la galería |
 
 Las esculturas se muestran completas (`object-contain` sobre fondo blanco), sin
 recortes. Para cambiar una imagen basta con sobrescribir el archivo conservando
 el nombre.
+
+> **Importante:** Next.js sirve `public/` distinguiendo mayúsculas y
+> minúsculas, aunque el sistema operativo no lo haga. Las extensiones de todas
+> las imágenes van **en minúsculas** (`.jpg`) y el código las referencia con
+> ese mismo nombre. Si subes una imagen con `.JPG`, rompe el enlace.
+
+### Currículum
+
+El botón «Descarga mi currículum» apunta a
+`/files/cv-maria-del-carmen.pdf`. El PDF va en `public/files/`; mientras no
+esté ahí, el enlace devuelve un 404.
 
 ## Contacto
 
@@ -147,6 +178,9 @@ export const CONTACT_LINKS = {
 | Ruta | Descripción |
 | --- | --- |
 | `/` | Landing principal |
+| `/about` | Biografía, trayectoria y currículum |
+| `/projects/photography` | Series fotográficas y galería |
+| `/projects/sculptures` | Catálogo de la colección de esculturas |
 
 ## Despliegue
 
