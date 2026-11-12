@@ -1,6 +1,7 @@
 import React, { ReactNode } from "react";
 import Image from "next/image";
 import { MaskedLines } from "@/components/Animations/masked-lines";
+import { RevealImage } from "@/components/Animations/reveal-image";
 import { RevealOnScroll } from "@/components/Animations/reveal-on-scroll";
 import { GradientRule } from "@/components/Common/gradient-rule";
 
@@ -187,43 +188,45 @@ export function SculpturesGridSection({
 
         <div className="mt-12 grid grid-cols-1 gap-8 sm:grid-cols-2 lg:grid-cols-3 md:mt-16">
           {items.map((item, index) => (
-            <RevealOnScroll
-              key={item.id || item.title}
-              delayMs={80 + index * 60}
-            >
-              <article className="flex flex-col h-full overflow-hidden">
-                {/* Contenedor superior de la Imagen */}
-                <div className="relative aspect-square w-full bg-white flex items-center justify-center p-6 border border-ink/[0.03]">
-                  <Image
-                    src={item.imageSrc}
-                    alt={item.imageAlt || item.title}
-                    fill
-                    sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
-                    className="object-contain p-4"
-                  />
+            <article key={item.id || item.title} className="flex flex-col h-full overflow-hidden">
+              {/* Contenedor superior de la Imagen */}
+              <RevealImage
+                className="aspect-square w-full bg-white border border-ink/[0.03]"
+                innerClassName="p-6"
+                delayMs={80 + index * 60}
+              >
+                <Image
+                  src={item.imageSrc}
+                  alt={item.imageAlt || item.title}
+                  fill
+                  sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
+                  className="object-contain p-4 transition-transform duration-700 hover:scale-[1.04]"
+                />
+              </RevealImage>
+
+              {/* Bloque inferior de información con fondo beige suave */}
+              <RevealOnScroll
+                delayMs={120 + index * 60}
+                className="flex flex-1 flex-col justify-between bg-black/[0.025] p-6 md:p-7 border-t-0 border border-ink/[0.03]"
+              >
+                <div>
+                  {/* Etiqueta superior */}
+                  <p className="font-label text-[10px] tracking-[0.24em] text-rust uppercase">
+                    {item.category}
+                  </p>
+
+                  {/* Título de la pieza */}
+                  <h3 className="mt-2 font-display text-[22px] font-light text-ink sm:text-[24px]">
+                    {item.title}
+                  </h3>
+
+                  {/* Descripción */}
+                  <p className="mt-3 text-[13px] leading-[1.8] text-taupe md:text-[14px]">
+                    {item.description}
+                  </p>
                 </div>
-
-                {/* Bloque inferior de información con fondo beige suave */}
-                <div className="flex flex-1 flex-col justify-between bg-black/[0.025] p-6 md:p-7 border-t-0 border border-ink/[0.03]">
-                  <div>
-                    {/* Etiqueta superior */}
-                    <p className="font-label text-[10px] tracking-[0.24em] text-rust uppercase">
-                      {item.category}
-                    </p>
-
-                    {/* Título de la pieza */}
-                    <h3 className="mt-2 font-display text-[22px] font-light text-ink sm:text-[24px]">
-                      {item.title}
-                    </h3>
-
-                    {/* Descripción */}
-                    <p className="mt-3 text-[13px] leading-[1.8] text-taupe md:text-[14px]">
-                      {item.description}
-                    </p>
-                  </div>
-                </div>
-              </article>
-            </RevealOnScroll>
+              </RevealOnScroll>
+            </article>
           ))}
         </div>
       </div>
