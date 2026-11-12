@@ -17,7 +17,7 @@ export function SculptureDetailsSection({
   badge = "ESCULTURA · DESTACADO",
   title = "Trespiral",
   description = "Una forma que se pliega sobre sí misma y abre un diálogo entre el volumen y el vacío. Trespiral reúne curvas, recorridos y una superficie de tonos verdes que cambia con la luz.",
-  actionHref = "#",
+  actionHref = "#coleccion-esculturas",
   actionLabel = "Ver obra",
 }: SculptureDetailsSectionProps) {
   return (

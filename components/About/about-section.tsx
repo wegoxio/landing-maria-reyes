@@ -55,7 +55,7 @@ export function AboutSection({
   disciplines = DEFAULT_DISCIPLINES,
   displayCard = false,
   actionType = "link",
-  actionHref = "/sobre-mi",
+  actionHref = "/about",
   actionLabel = "Saber más",
   showActionIcon = false,
   classNameAction = "",
