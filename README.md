@@ -17,6 +17,7 @@ dependencias actualizado.
 | `tailwindcss` | 4.3.5 | v4 vía plugin de PostCSS |
 | `typescript` | 6.0.3 | TS 7 requiere `useTypeScriptCli` (experimental) en Next |
 | `eslint` | 10.14.0 | Configuración flat de `eslint-config-next` 16.4.6 |
+| `resend` | 6.38.0 | Envío de los mensajes del formulario de contacto |
 
 El gestor de paquetes es **pnpm** (12.18.0), alineado con `agrotrust`.
 
@@ -30,6 +31,10 @@ pnpm typecheck     # tsc --noEmit
 pnpm build         # build de producción
 pnpm start         # servidor de producción
 ```
+
+El formulario de contacto lee su configuración de `.env.local` (ver
+[Contacto](#contacto)). Sin ese archivo el sitio arranca igual, pero el
+formulario avisa de que no está disponible.
 
 ## Sistema de diseño
 
@@ -73,6 +78,9 @@ app/
   layout.tsx            # Layout raíz: <html lang="es">, las dos fuentes y metadatos
   page.tsx              # Home: compone las secciones en orden
   about/page.tsx        # Biografía, trayectoria y descarga del currículum
+  contacto/
+    page.tsx            # Página de contacto con el formulario
+    actions.ts          # Server Action: valida y entrega el mensaje por Resend
   projects/
     photography/page.tsx # Series fotográficas y galería de 120 imágenes
     sculptures/page.tsx  # Catálogo de la colección de esculturas
@@ -83,12 +91,18 @@ components/
   Animations/           # Primitivas de movimiento (ver abajo)
   BecomePartner/        # Bloque "¿Tienes algo en mente? / ¡Hablemos!"
   Common/               # Piezas compartidas (logotipo, enlaces, reglas)
+  Contact/              # Formulario de contacto y bloque de la página
   Footer/               # Pie de página
   Hero/                 # Cabecera, portada, banda con la cita y franja a sangre
   Platform/             # Servicios: colección de esculturas y bloque de fotografía
   project/              # Secciones propias de cada proyecto
     photography/        # Índice de series y galería
     sculptures/         # Catálogo y pieza destacada
+mails/                  # Plantillas de correo del formulario de contacto
+  brand.ts              # Colores y tipografías de la marca para el correo
+  layout.ts             # Envoltura común: cabecera con el logotipo y pie
+  styles.ts             # Estilos en línea del correo
+  contact-templates.ts  # Acuse de recibo y notificación del estudio
 ```
 
 Cada sección es un componente independiente que se importa en `app/page.tsx`.
@@ -207,15 +221,106 @@ esté ahí, el enlace devuelve un 404.
 
 ## Contacto
 
-Los canales de contacto están centralizados en
-`components/Common/contact-links.ts`. Sustituye esas direcciones por las
-definitivas antes de publicar:
+El enlace «Contacto» de la cabecera, del menú móvil y del pie lleva a
+`/contacto`, una página con un formulario de **nombre**, **correo** y
+**razón** que entrega el mensaje al estudio por correo con **Resend**.
+
+### Cómo funciona
+
+| Pieza | Dónde | Qué hace |
+| --- | --- | --- |
+| Página | `app/contacto/page.tsx` | Compone la portada y el bloque del formulario |
+| Acción | `app/contacto/actions.ts` | Valida los campos y envía los dos correos por Resend |
+| Formulario | `components/Contact/contact-form.tsx` | `useActionState`: errores por campo, estado de envío y limpieza al terminar |
+| Plantillas | `mails/` | Los dos correos del formulario, con el logotipo y los colores de la marca |
+
+La acción es una **Server Action**, así que el formulario funciona igual
+sin JavaScript. La validación se hace en el servidor: la del navegador
+(`required`, `type="email"`) es solo la primera capa. Si el envío falla, el
+visitante ve un mensaje genérico y el detalle queda en el log del servidor.
+
+### Los dos correos
+
+Cada envío del formulario genera **dos** correos:
+
+| Correo | Destinatario | Qué lleva |
+| --- | --- | --- |
+| Notificación | El estudio (`RESEND_TO_EMAIL`) | Nombre, correo y razón, con un botón para responder |
+| Acuse de recibo | Quien escribió el formulario | Confirmación de que su solicitud fue recibida y copia de lo que escribió |
+
+La notificación lleva `replyTo` con el correo de quien escribió, de modo que
+se responde desde el mismo hilo. El acuse lleva `replyTo` con el correo del
+estudio: si quien escribió responde, el mensaje vuelve a María Reyes.
+
+Si el acuse de recibo falla, el aviso se queda en el log del servidor y el
+visitante ve el mensaje de éxito: el estudio ya tiene su mensaje.
+
+### Plantillas
+
+Las plantillas viven en `mails/`. Cada una devuelve el asunto, la versión
+HTML y la versión en texto plano.
+
+| Archivo | Qué define |
+| --- | --- |
+| `mails/brand.ts` | Los colores de `app/globals.css` en hexadecimal, el logotipo y la regla con el degradado de marca |
+| `mails/layout.ts` | La envoltura común: cabecera con el logotipo, regla con el degradado y pie con los datos del estudio |
+| `mails/styles.ts` | Los estilos en línea del correo |
+| `mails/contact-templates.ts` | Las dos plantillas del formulario |
+
+Todo el CSS va **en línea**, porque los clientes de correo ignoran las hojas
+de estilo externas y no admiten variables CSS. El degradado de la marca se
+pinta con una celda de tabla por parada: Outlook no dibuja degradados en el
+fondo de una celda. El logotipo del sitio es tipográfico, así que aquí se
+reproduce con la misma composición y Georgia como sustituto de Cormorant
+Garamond.
+
+### Configuración
+
+Copia `.env.example` a `.env.local` y rellena la clave que se crea en
+[resend.com/api-keys](https://resend.com/api-keys):
+
+```bash
+# Datos del estudio (públicos: los usa también el navegador)
+NEXT_PUBLIC_SITE_EMAIL=mcarmenreyes@gmail.com
+NEXT_PUBLIC_SITE_PHONE=+58 412 607 4961
+NEXT_PUBLIC_WHATSAPP_NUMBER=584126074961
+
+# Envío con Resend (solo el servidor)
+RESEND_API_KEY=re_...
+RESEND_TO_EMAIL=
+RESEND_FROM_EMAIL=Estudio <onboarding@resend.dev>
+```
+
+| Variable | Obligatoria | Si no se define |
+| --- | --- | --- |
+| `RESEND_API_KEY` | Sí | El formulario avisa de que no está disponible |
+| `RESEND_TO_EMAIL` | No | Se usa `NEXT_PUBLIC_SITE_EMAIL` |
+| `RESEND_FROM_EMAIL` | No | `Estudio María Reyes <onboarding@resend.dev>` |
+| `NEXT_PUBLIC_SITE_EMAIL` | No | `mcarmenreyes@gmail.com` |
+| `NEXT_PUBLIC_SITE_PHONE` | No | `+58 412 607 4961` |
+| `NEXT_PUBLIC_WHATSAPP_NUMBER` | No | `584126074961` |
+
+> `onboarding@resend.dev` es la dirección de prueba de Resend: **solo entrega
+> al correo de la cuenta de Resend**. Con ella el acuse de recibo a un
+> visitante externo tampoco llega. Para que los dos correos lleguen a
+> cualquier destinatario hay que verificar el dominio en Resend y poner aquí
+> una dirección propia, por ejemplo
+> `Estudio María Reyes <contacto@tudominio.com>`.
+
+Las variables con prefijo `NEXT_PUBLIC_` se incrustan en el navegador al
+compilar: si las cambias, hay que volver a compilar para que se vean.
+
+### Canales directos
+
+Los canales se construyen a partir de las variables de entorno en
+`components/Common/contact-links.ts`, que expone `CONTACT_INFO` (los datos
+en crudo) y `CONTACT_LINKS` (los enlaces ya armados):
 
 ```ts
 export const CONTACT_LINKS = {
-  whatsapp: "https://wa.me/",
-  instagram: "https://instagram.com/",
-  email: "mailto:correo@ejemplo.com",
+  email: `mailto:${SITE_EMAIL}`,
+  phone: `tel:${SITE_PHONE}`,
+  whatsapp: `https://wa.me/${WHATSAPP_NUMBER}`,
 } as const;
 ```
 
@@ -227,6 +332,7 @@ export const CONTACT_LINKS = {
 | `/about` | Biografía, trayectoria y currículum |
 | `/projects/photography` | Series fotográficas y galería |
 | `/projects/sculptures` | Catálogo de la colección de esculturas |
+| `/contacto` | Formulario de contacto (nombre, correo, razón) |
 
 ## Navegación
 
@@ -239,6 +345,7 @@ terracota dónde está el visitante:
 | `/about` | "Sobre mí" en terracota, con subrayado fijo |
 | `/projects/photography` | "Proyectos" en terracota, y "Fotografía" destacado en el desplegable |
 | `/projects/sculptures` | "Proyectos" en terracota, y "Escultura" destacado en el desplegable |
+| `/contacto` | "Contacto" en terracota, con subrayado fijo |
 
 El enlace activo lleva `aria-current="page"`, para que el estado también
 llegue a los lectores de pantalla.

@@ -1,7 +1,7 @@
 import Link from "next/link";
 import { cacheLife } from "next/cache";
 import { BrandWordmark } from "@/components/Common/brand-wordmark";
-import { CONTACT_LINKS } from "@/components/Common/contact-links";
+import { CONTACT_LINKS, CONTACT_PAGE_PATH } from "@/components/Common/contact-links";
 
 const PROJECT_LINKS = [
   { href: "/projects/sculptures", label: "Escultura" },
@@ -9,35 +9,18 @@ const PROJECT_LINKS = [
 ];
 
 const CONTACT_ITEMS = [
-  { href: CONTACT_LINKS.whatsapp, label: "Whatsapp" },
-  { href: CONTACT_LINKS.instagram, label: "Instagram" },
-  { href: CONTACT_LINKS.email, label: "Email" },
-];
+  { href: CONTACT_PAGE_PATH, label: "Formulario", internal: true },
+  { href: CONTACT_LINKS.whatsapp, label: "Whatsapp", internal: false },
+  { href: CONTACT_LINKS.phone, label: "Teléfono", internal: false },
+  { href: CONTACT_LINKS.email, label: "Email", internal: false },
+] as const;
 
 const SOCIALS = [
-  {
-    id: "instagram",
-    label: "Instagram",
-    short: "ig",
-    href: CONTACT_LINKS.instagram,
-  },
   {
     id: "whatsapp",
     label: "WhatsApp",
     short: "wa",
     href: CONTACT_LINKS.whatsapp,
-  },
-  {
-    id: "linkedin",
-    label: "LinkedIn",
-    short: "in",
-    href: "https://linkedin.com/",
-  },
-  {
-    id: "facebook",
-    label: "Facebook",
-    short: "fb",
-    href: "https://facebook.com/",
   },
 ];
 
@@ -105,12 +88,21 @@ export async function FooterSection() {
               <ul className="mt-4 space-y-3">
                 {CONTACT_ITEMS.map((link) => (
                   <li key={link.label}>
-                    <a
-                      href={link.href}
-                      className="text-[14px] text-ink/80 transition-colors hover:text-rust"
-                    >
-                      {link.label}
-                    </a>
+                    {link.internal ? (
+                      <Link
+                        href={link.href}
+                        className="text-[14px] text-ink/80 transition-colors hover:text-rust"
+                      >
+                        {link.label}
+                      </Link>
+                    ) : (
+                      <a
+                        href={link.href}
+                        className="text-[14px] text-ink/80 transition-colors hover:text-rust"
+                      >
+                        {link.label}
+                      </a>
+                    )}
                   </li>
                 ))}
               </ul>

@@ -1,6 +1,7 @@
+import Link from "next/link";
 import { MaskedLines } from "@/components/Animations/masked-lines";
 import { RevealOnScroll } from "@/components/Animations/reveal-on-scroll";
-import { CONTACT_LINKS } from "@/components/Common/contact-links";
+import { CONTACT_LINKS, CONTACT_PAGE_PATH } from "@/components/Common/contact-links";
 
 type BecomePartnerSectionProps = {
   /** Texto del botón de llamada a la acción. */
@@ -70,6 +71,15 @@ export function BecomePartnerSection({
             <WhatsAppIcon />
             {ctaLabel}
           </a>
+        </RevealOnScroll>
+
+        <RevealOnScroll delayMs={260}>
+          <Link
+            href={CONTACT_PAGE_PATH}
+            className="mt-6 inline-block font-label text-[11px] tracking-[0.22em] text-paper/60 uppercase underline decoration-paper/30 underline-offset-[6px] transition-colors duration-300 hover:text-rust hover:decoration-rust"
+          >
+            O escríbeme por el formulario
+          </Link>
         </RevealOnScroll>
       </div>
     </section>

@@ -15,6 +15,8 @@ export type NavActiveState = {
   sculptures: boolean;
   /** Galería de fotografía. */
   photography: boolean;
+  /** Página de contacto con el formulario. */
+  contacto: boolean;
 };
 
 const NO_ACTIVE_STATE: NavActiveState = {
@@ -22,6 +24,7 @@ const NO_ACTIVE_STATE: NavActiveState = {
   projects: false,
   sculptures: false,
   photography: false,
+  contacto: false,
 };
 
 export function getNavActiveState(pathname: string | null): NavActiveState {
@@ -35,5 +38,6 @@ export function getNavActiveState(pathname: string | null): NavActiveState {
       pathname === "/projects" || pathname.startsWith("/projects/"),
     sculptures: pathname.startsWith("/projects/sculptures"),
     photography: pathname.startsWith("/projects/photography"),
+    contacto: pathname === "/contacto" || pathname.startsWith("/contacto/"),
   };
 }

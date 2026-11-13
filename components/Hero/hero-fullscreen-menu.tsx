@@ -3,7 +3,7 @@
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useEffect } from "react";
-import { CONTACT_LINKS } from "@/components/Common/contact-links";
+import { CONTACT_PAGE_PATH } from "@/components/Common/contact-links";
 import { getNavActiveState } from "@/components/Common/nav-active-state";
 
 type HeroFullscreenMenuProps = {
@@ -92,15 +92,14 @@ export function HeroFullscreenMenu({
           Fotografía
         </Link>
 
-        <a
-          href={CONTACT_LINKS.whatsapp}
-          target="_blank"
-          rel="noopener noreferrer"
+        <Link
+          href={CONTACT_PAGE_PATH}
           onClick={onClose}
-          className={menuItemClass(false)}
+          aria-current={active.contacto ? "page" : undefined}
+          className={menuItemClass(active.contacto)}
         >
           Contacto
-        </a>
+        </Link>
       </nav>
 
       <p className="px-5 pb-8 font-label text-[10px] tracking-[0.3em] text-paper/45 uppercase">

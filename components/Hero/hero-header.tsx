@@ -4,7 +4,7 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useEffect, useRef, useState } from "react";
 import { BrandWordmark } from "@/components/Common/brand-wordmark";
-import { CONTACT_LINKS } from "@/components/Common/contact-links";
+import { CONTACT_PAGE_PATH } from "@/components/Common/contact-links";
 import { getNavActiveState } from "@/components/Common/nav-active-state";
 import { supportsScrollProgressTimeline } from "@/components/Animations/supports-scroll-timeline";
 import { SmoothScrollLink } from "@/components/Common/smooth-scroll-link";
@@ -176,14 +176,13 @@ export function HeroHeader({
             </div>
           </div>
 
-          <a
-            href={CONTACT_LINKS.whatsapp}
-            target="_blank"
-            rel="noopener noreferrer"
-            className={navLinkClass(false)}
+          <SmoothScrollLink
+            href={CONTACT_PAGE_PATH}
+            aria-current={active.contacto ? "page" : undefined}
+            className={navLinkClass(active.contacto)}
           >
             Contacto
-          </a>
+          </SmoothScrollLink>
         </nav>
 
         <button
