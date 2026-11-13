@@ -216,8 +216,9 @@ de LCP en consola.
 ### Currículum
 
 El botón «Descarga mi currículum» apunta a
-`/files/cv-maria-del-carmen.pdf`. El PDF va en `public/files/`; mientras no
-esté ahí, el enlace devuelve un 404.
+`/files/cv-maria-del-carmen.pdf`. El PDF vive en `public/files/` con ese
+nombre exacto; si lo renumeras, hay que cambiar el `actionHref` de
+`app/about/page.tsx`.
 
 ## Contacto
 
