@@ -6,9 +6,6 @@ const nextConfig: NextConfig = {
   },
   cacheComponents: true,
   partialPrefetching: true,
-  images: {
-    unoptimized: true, // 👈 Desactiva la optimización de imágenes globalmente en desarrollo/producción
-  },
 };
 
 export default nextConfig;

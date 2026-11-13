@@ -193,7 +193,7 @@ export function SculpturesGridSection({
               <RevealImage
                 className="aspect-square w-full bg-white border border-ink/[0.03]"
                 innerClassName="p-6"
-                delayMs={80 + index * 60}
+                delayMs={80 + (index % 3) * 60}
               >
                 <Image
                   src={item.imageSrc}

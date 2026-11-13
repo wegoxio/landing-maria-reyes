@@ -87,7 +87,8 @@ export function HeroSection({
             src={imageSrc}
             alt={imageAlt}
             fill
-            priority
+            loading="eager"
+            fetchPriority="high"
             className="ken-burns object-cover object-center"
           />
           <div className="absolute inset-0 bg-black/65" />
@@ -179,7 +180,8 @@ export function HeroSection({
                   src={imageSrc}
                   alt={imageAlt}
                   fill
-                  priority
+                  loading="eager"
+                  fetchPriority="high"
                   sizes="(max-width: 768px) 90vw, 600px"
                   className="ken-burns object-contain"
                 />

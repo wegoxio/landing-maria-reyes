@@ -12,18 +12,13 @@ export function supportsScrollTimeline() {
 }
 
 /**
- * Detecta el soporte de líneas de tiempo con nombre (`view-timeline-name`).
- *
- * Es un subconjunto más exigente que `animation-timeline: view()` y lo
- * necesita el revelado de imágenes: el marco declara la línea de tiempo y
- * la capa interior la consume, de modo que la medición no depende de una
- * transformación en curso.
+ * Detecta el soporte de la línea de tiempo de progreso de scroll, que
+ * alimenta la barra de lectura de la cabecera.
  */
-export function supportsNamedViewTimeline() {
+export function supportsScrollProgressTimeline() {
   return (
-    supportsScrollTimeline() &&
     typeof CSS !== "undefined" &&
     typeof CSS.supports === "function" &&
-    CSS.supports("view-timeline-name: --reveal-image")
+    CSS.supports("animation-timeline: scroll()")
   );
 }

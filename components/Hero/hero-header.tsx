@@ -2,10 +2,11 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { BrandWordmark } from "@/components/Common/brand-wordmark";
 import { CONTACT_LINKS } from "@/components/Common/contact-links";
 import { getNavActiveState } from "@/components/Common/nav-active-state";
+import { supportsScrollProgressTimeline } from "@/components/Animations/supports-scroll-timeline";
 import { SmoothScrollLink } from "@/components/Common/smooth-scroll-link";
 
 type HeroHeaderProps = {
@@ -52,6 +53,7 @@ export function HeroHeader({
   const pathname = usePathname();
   const active = getNavActiveState(pathname);
   const [hasScrolled, setHasScrolled] = useState(false);
+  const progressRef = useRef<HTMLDivElement | null>(null);
 
   useEffect(() => {
     const onScroll = () => {
@@ -63,6 +65,50 @@ export function HeroHeader({
 
     return () => {
       window.removeEventListener("scroll", onScroll);
+    };
+  }, []);
+
+  /*
+   * La barra de progreso de lectura la dibuja el CSS con la línea de tiempo
+   * `scroll()` cuando el navegador la soporta. En el resto se calcula
+   * aquí, para que la barra no desaparezca.
+   */
+  useEffect(() => {
+    if (supportsScrollProgressTimeline()) {
+      return;
+    }
+
+    const bar = progressRef.current;
+
+    if (!bar) {
+      return;
+    }
+
+    let frame = 0;
+
+    const update = () => {
+      frame = 0;
+      const max = document.documentElement.scrollHeight - window.innerHeight;
+      const progress = max > 0 ? Math.min(1, window.scrollY / max) : 0;
+      bar.style.setProperty("--scroll-progress", progress.toFixed(4));
+    };
+
+    const onScroll = () => {
+      if (!frame) {
+        frame = window.requestAnimationFrame(update);
+      }
+    };
+
+    update();
+    window.addEventListener("scroll", onScroll, { passive: true });
+    window.addEventListener("resize", onScroll);
+
+    return () => {
+      window.removeEventListener("scroll", onScroll);
+      window.removeEventListener("resize", onScroll);
+      if (frame) {
+        window.cancelAnimationFrame(frame);
+      }
     };
   }, []);
 
@@ -152,8 +198,9 @@ export function HeroHeader({
         </button>
       </div>
 
-      {/* Barra de progreso de lectura: sigue el scroll del documento en CSS puro. */}
+      {/* Barra de progreso de lectura: sigue el scroll del documento. */}
       <div
+        ref={progressRef}
         aria-hidden
         className="scroll-progress h-px w-full"
         style={{ background: "var(--brand-gradient)" }}

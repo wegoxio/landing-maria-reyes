@@ -108,7 +108,7 @@ export function PlatformSection() {
             >
               <RevealImage
                 className="aspect-[4/5] w-full"
-                delayMs={70 + index * 70}
+                delayMs={70 + (index % 3) * 70}
               >
                 <Image
                   src={item.image}
@@ -194,7 +194,7 @@ export function PlatformSection() {
               <article key={photo.id} className="flex flex-col">
                 <RevealImage
                   className="aspect-[4/3] w-full bg-white"
-                  delayMs={70 + index * 70}
+                  delayMs={70 + (index % 3) * 70}
                 >
                   <Image
                     src={photo.image}

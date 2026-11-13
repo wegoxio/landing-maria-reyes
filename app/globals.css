@@ -137,22 +137,24 @@ body {
     transition: none;
     animation: mask-scroll-rise linear both;
     animation-timeline: view();
-    animation-range: entry 0% entry 62%;
+    /* La línea mide lo que mide el texto, así que "entry" sería muy
+       corto: se prolonga hasta "cover" para que el emerge se vea. */
+    animation-range: cover 0% cover 25%;
   }
 
   .mask-scroll .mask-line:nth-child(2) > span {
-    animation-range: entry 5% entry 70%;
+    animation-range: cover 5% cover 30%;
   }
 
   .mask-scroll .mask-line:nth-child(3) > span {
-    animation-range: entry 10% entry 78%;
+    animation-range: cover 10% cover 35%;
   }
 
   [data-reveal] {
     transition: none;
     animation: reveal-scroll linear both;
     animation-timeline: view();
-    animation-range: entry 0% entry 52%;
+    animation-range: cover 0% cover 25%;
   }
 }
 
@@ -235,47 +237,38 @@ body {
  * interior asciende hasta su sitio, con un leve ajuste de escala para que
  * la imagen "asiente" al llegar.
  *
- * Vía principal: CSS puro. El marco declara la línea de tiempo y la capa
- * interior la consume, de modo que la medición nunca depende de una
- * transformación en curso (el marco no se mueve).
+ * A diferencia del resto de animaciones, esta NO está ligada al scroll: se
+ * dispara una sola vez cuando la imagen entra en pantalla y dura lo que
+ * dura el keyframe. Ligada al scroll, se pasaba de largo al bajar de golpe
+ * y la imagen aparecía sin que se notara el movimiento.
  *
- * Vía de respaldo: la aplica el JS cuando el navegador no soporta
- * animaciones ligadas al scroll. El atributo data-reveal-image se escribe
- * solo desde JS, así que sin JS la imagen siempre es visible.
+ * Estado oculto: lo aplica el JavaScript al montar, nunca el HTML del
+ * servidor. Así, sin JavaScript la imagen es visible.
  */
-.reveal-image {
-  view-timeline-name: --reveal-image;
-  view-timeline-axis: block;
-}
-
-.reveal-image__inner {
-  transition:
-    transform 900ms cubic-bezier(0.22, 1, 0.36, 1) var(--reveal-delay, 0ms);
-}
-
-[data-reveal-image="hidden"] .reveal-image__inner {
+.reveal-image__inner.is-hidden {
+  opacity: 0.3;
   transform: translate3d(0, 100%, 0) scale(1.08);
 }
 
-[data-reveal-image="in"] .reveal-image__inner {
-  transform: translate3d(0, 0, 0) scale(1);
-}
-
-@supports (animation-timeline: view()) and (view-timeline-name: --reveal-image) {
-  .reveal-image__inner {
-    transition: none;
-    animation: image-rise linear both;
-    animation-timeline: --reveal-image;
-    animation-range: entry 0% entry 88%;
-  }
+/*
+ * Entrada: se ejecuta una sola vez cuando la imagen entra en pantalla.
+ * No está ligada al scroll, de modo que se ve entera aunque el visitante
+ * baje de golpe: el marco recorta el contenido y la capa interior asciende
+ * desde translateY(100%) hasta su posición final.
+ */
+.reveal-image__inner.is-revealed {
+  animation: image-rise 900ms cubic-bezier(0.22, 1, 0.36, 1) both;
+  animation-delay: var(--reveal-delay, 0ms);
 }
 
 @keyframes image-rise {
   from {
+    opacity: 0.3;
     transform: translate3d(0, 100%, 0) scale(1.08);
   }
 
   to {
+    opacity: 1;
     transform: translate3d(0, 0, 0) scale(1);
   }
 }
@@ -299,7 +292,12 @@ body {
   .gradient-rule {
     animation: rule-draw linear both;
     animation-timeline: --gradient-rule;
-    animation-range: entry 0% entry 70%;
+    /*
+     * La regla mide su propio alto (2px), así que la fase "entry"
+     * duraría 2px de scroll y el dibujado sería invisible. "cover"
+     * da un recorrido de unos 215px.
+     */
+    animation-range: cover 0% cover 30%;
   }
 }
 
@@ -318,10 +316,13 @@ body {
 /* ---------------------------------------------------------------- */
 
 /*
- * Muestra cuánto se ha avanzado en la página. Es puro CSS: la línea de
- * tiempo `scroll()` sigue el desplazamiento del documento.
+ * Muestra cuánto se ha avanzado en la página. Con la línea de tiempo
+ * `scroll()` es puro CSS; en los navegadores que no la soportan, el
+ * JavaScript escribe la variable --scroll-progress y la barra sigue
+ * funcionando.
  */
 .scroll-progress {
+  transform: scaleX(var(--scroll-progress, 0));
   transform-origin: left center;
 }
 
@@ -339,12 +340,6 @@ body {
 
   to {
     transform: scaleX(1);
-  }
-}
-
-@supports not (animation-timeline: scroll()) {
-  .scroll-progress {
-    display: none;
   }
 }
 
@@ -445,11 +440,35 @@ body {
     scroll-behavior: auto;
   }
 
+  /*
+   * Sin movimiento se desactivan el zoom continuo, la entrada escalonada
+   * del menú y el dibujado de las reglas.
+   *
+   * Las entradas, en cambio, se conservan como un fundido: el contenido
+   * tiene que seguir apareciendo, solo que sin desplazamientos que puedan
+   * alterar el equilibrio. Por eso la observación de las imágenes sigue
+   * activa aunque el sistema pida menos movimiento.
+   */
   .mask-load .mask-line > span,
   .reveal-load,
   .ken-burns,
-  .menu-item {
+  .menu-item,
+  .gradient-rule {
     animation: none;
+  }
+
+  .reveal-image__inner.is-revealed,
+  .mask-scroll .mask-line > span,
+  [data-reveal] {
+    animation-name: fade-only;
+    animation-duration: 600ms;
+    animation-timing-function: ease-out;
+    animation-fill-mode: both;
+  }
+
+  .reveal-image__inner.is-hidden {
+    opacity: 0;
+    transform: none;
   }
 
   .mask-line > span,
@@ -457,9 +476,15 @@ body {
   .reveal-image__inner {
     transition: none;
   }
+}
 
-  [data-reveal-image] .reveal-image__inner {
-    transform: none;
+@keyframes fade-only {
+  from {
+    opacity: 0;
+  }
+
+  to {
+    opacity: 1;
   }
 }
 

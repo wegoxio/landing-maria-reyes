@@ -103,20 +103,20 @@ Cada sección es un componente independiente que se importa en `app/page.tsx`.
 | `masked-lines.tsx` | Cada línea del título emerge desde una ranura (`overflow: hidden`) |
 | `reveal-on-scroll.tsx` | Entrada con desplazamiento y fundido |
 | `parallax-layer.tsx` | Capa que se desplaza con el scroll |
-| `observe-reveal.ts` | Utilidad de observación (IntersectionObserver + respaldo) |
+| `observe-reveal.ts` | Observación compartida del viewport (un solo IntersectionObserver) |
 | `supports-scroll-timeline.ts` | Detección de soporte de animaciones ligadas al scroll |
 | `use-reduced-motion.ts` | Detecta `prefers-reduced-motion` |
 
-La vía principal es **CSS puro** (`animation-timeline: view()`), sin JavaScript
-ni mediciones en el navegador. Para navegadores sin soporte, hay un respaldo
-en JavaScript con `IntersectionObserver`.
+Para los títulos y los bloques de texto, la vía principal es **CSS puro**
+(`animation-timeline: view()`), sin JavaScript ni mediciones en el navegador.
+Para navegadores sin soporte, hay un respaldo con `IntersectionObserver`.
 
-El revelado de imágenes usa `view-timeline-name`: el marco de la imagen declara
-la línea de tiempo y la capa interior la consume. Así la medición nunca depende
-de una transformación en curso, y el marco puede recortar el contenido sin que
-la posición de la imagen se desplace.
-
-Además del revelado, `app/globals.css` define:
+**El revelado de imágenes es la excepción**: no está ligado al scroll, sino
+que se dispara una sola vez cuando la imagen entra en pantalla y dura lo que
+dura el keyframe. Ligado al scroll se pasaba de largo al bajar de golpe y la
+imagen aparecía sin que se notara el movimiento. `observe-reveal.ts` usa un
+único `IntersectionObserver` para toda la página: con uno por elemento, la
+galería registraba más de cien listeners de scroll.Además del revelado, `app/globals.css` define:
 
 | Animación | Qué hace |
 | --- | --- |
@@ -130,7 +130,41 @@ Reglas de la casa:
 
 - El contenido **nunca** queda invisible si el JavaScript falla: el estado
   oculto solo lo aplica el JS, nunca el HTML del servidor.
-- `prefers-reduced-motion: reduce` desactiva todas las transiciones.
+- Con `prefers-reduced-motion: reduce` el sitio **no se queda sin
+  movimiento**: las entradas se degradan a un fundido simple, sin
+  desplazamientos ni escala. En Windows ese ajuste depende de
+  *Accesibilidad → Efectos visuales → Animaciones*, y en Chrome es la misma
+  API que consultan las animaciones ligadas al scroll.
+- Las animaciones ligadas al scroll de los títulos y los bloques de texto
+  usan la fase **`cover`**, no `entry`. La fase `entry` dura lo que el
+  elemento tarda en entrar —unos 190px—, y con scroll rápido el texto
+  aparecía de golpe. `cover` alarga el recorrido hasta unos 420px y el
+  movimiento se percibe entero.
+
+### Compatibilidad
+
+Las animaciones ligadas al scroll (`animation-timeline`) todavía no son
+universales:
+
+| Función | Chrome / Edge | Safari | Firefox | Opera |
+| --- | --- | --- | --- | --- |
+| `animation-timeline: view()` y `scroll()` | 115+ | 26+ | 159+ | 101+ |
+| `view-timeline-name` | 116+ | 26+ | 159+ | 102+ |
+
+Firefox 159 llegó el 27 de octubre de 2026 y Safari 26 en septiembre de
+2025. En los navegadores anteriores el sitio no pierde ninguna función,
+solo cambia el comportamiento de estas piezas:
+
+| Animación | Sin soporte de `animation-timeline` |
+| --- | --- |
+| Revelado de imágenes | Igual: lo dispara JavaScript, no depende del CSS |
+| Títulos y bloques de texto | Respaldo con `IntersectionObserver` y transición |
+| Regla con degradado | Aparece de golpe, sin dibujarse |
+| Barra de progreso | Se calcula en JavaScript con `--scroll-progress` |
+| Ken Burns, subrayado del navbar, entrada del menú | Igual: son keyframes CSS normales |
+
+Todo lo demás —las tipografías, el diseño y las imágenes— es compatible con
+los navegadores actuales.
 
 ## Imágenes
 
@@ -147,6 +181,18 @@ Las imágenes viven en `public/images/` y se sirven con `next/image`. Hay
 Las esculturas se muestran completas (`object-contain` sobre fondo blanco), sin
 recortes. Para cambiar una imagen basta con sobrescribir el archivo conservando
 el nombre.
+
+### Carga de las imágenes
+
+`next/image` aplica `loading="lazy"` por defecto, así que solo se descargan
+las fotos que el visitante va alcanza a ver. La excepción es la imagen de
+portada de cada página: es el elemento **LCP** (el mayor visible al cargar),
+por lo que lleva `loading="eager"` y `fetchPriority="high"` para que empiece
+a descargarse de inmediato.
+
+En Next.js 16 el prop `priority` está deprecado en favor de esas dos
+propiedades; usarlo solo genera el `<link rel="preload">` y deja el aviso
+de LCP en consola.
 
 > **Importante:** Next.js sirve `public/` distinguiendo mayúsculas y
 > minúsculas, aunque el sistema operativo no lo haga. Las extensiones de todas
