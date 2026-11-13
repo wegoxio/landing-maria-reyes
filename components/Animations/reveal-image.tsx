@@ -1,9 +1,7 @@
 "use client";
 
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 import { observeReveal } from "./observe-reveal";
-import { supportsNamedViewTimeline } from "./supports-scroll-timeline";
-import { useReducedMotion } from "./use-reduced-motion";
 
 type RevealImageProps = {
   children: React.ReactNode;
@@ -16,19 +14,19 @@ type RevealImageProps = {
 };
 
 /**
- * Revela una imagen de abajo hacia arriba al entrar en el viewport.
+ * Revela una imagen de abajo hacia arriba cuando aparece en pantalla.
  *
- * El marco recorta el contenido (`overflow: hidden`) y la capa interior
- * asciende desde `translateY(100%)` hasta su posición final, con un leve
- * ajuste de escala para que la imagen "asiente" al llegar.
+ * A diferencia de las animaciones ligadas al scroll —que se ejecutan en
+ * función de la posición y se pasan de largo al hacer scroll rápido—, esta
+ * animación se dispara una sola vez cuando la imagen entra en el viewport y
+ * dura lo que dura el keyframe.
  *
- * Vía principal: CSS puro. El marco declara la línea de tiempo
- * (`view-timeline-name`) y la capa interior la consume, de modo que la
- * medición nunca depende de una transformación en curso.
+ * Con `prefers-reduced-motion` la observación sigue activa: es el CSS el
+ * que cambia el ascenso por un fundido, de modo que la imagen siempre
+ * aparece, solo que sin desplazamientos.
  *
- * Vía de respaldo: JS con IntersectionObserver, solo en navegadores sin
- * soporte. El estado oculto lo aplica siempre el JS, de modo que sin
- * JavaScript la imagen es visible.
+ * El estado oculto lo aplica el JavaScript, nunca el HTML del servidor:
+ * sin JavaScript la imagen es visible.
  */
 export function RevealImage({
   children,
@@ -37,36 +35,48 @@ export function RevealImage({
   delayMs = 0,
 }: RevealImageProps) {
   const frameRef = useRef<HTMLDivElement | null>(null);
-  const prefersReducedMotion = useReducedMotion();
+  // null = aún sin decidir. En el servidor y en la hidratación no hay
+  // ninguna clase, de modo que la imagen es visible: el estado oculto lo
+  // aplica el JavaScript, nunca el HTML del servidor.
+  const [state, setState] = useState<"hidden" | "revealed" | null>(null);
 
   useEffect(() => {
     const frame = frameRef.current;
 
-    if (!frame || prefersReducedMotion || supportsNamedViewTimeline()) {
-      return;
-    }
-
-    const rect = frame.getBoundingClientRect();
-    const isInViewport = rect.top < window.innerHeight && rect.bottom > 0;
-
-    if (isInViewport) {
+    if (!frame) {
       return;
     }
 
     frame.style.setProperty("--reveal-delay", `${delayMs}ms`);
-    frame.setAttribute("data-reveal-image", "hidden");
-    void frame.offsetHeight;
+
+    // Si ya está en pantalla se revela sin estado oculto: en el primer
+    // pintado no debe verse un parpadeo.
+    const rect = frame.getBoundingClientRect();
+    if (rect.top < window.innerHeight && rect.bottom > 0) {
+      setState("revealed");
+      return;
+    }
+
+    setState("hidden");
 
     const stopObserving = observeReveal(frame, () => {
-      frame.setAttribute("data-reveal-image", "in");
+      setState("revealed");
     });
 
     return stopObserving;
-  }, [delayMs, prefersReducedMotion]);
+  }, [delayMs]);
+
+  const stateClass =
+    state === "revealed" ? "is-revealed" : state === "hidden" ? "is-hidden" : "";
 
   return (
-    <div ref={frameRef} className={`reveal-image relative overflow-hidden ${className}`}>
-      <div className={`reveal-image__inner absolute inset-0 ${innerClassName}`}>
+    <div
+      ref={frameRef}
+      className={`reveal-image relative overflow-hidden ${className}`}
+    >
+      <div
+        className={`reveal-image__inner absolute inset-0 ${stateClass} ${innerClassName}`}
+      >
         {children}
       </div>
     </div>
