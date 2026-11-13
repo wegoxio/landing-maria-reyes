@@ -137,22 +137,24 @@ body {
     transition: none;
     animation: mask-scroll-rise linear both;
     animation-timeline: view();
-    animation-range: entry 0% entry 62%;
+    /* La línea mide lo que mide el texto, así que "entry" sería muy
+       corto: se prolonga hasta "cover" para que el emerge se vea. */
+    animation-range: cover 0% cover 25%;
   }
 
   .mask-scroll .mask-line:nth-child(2) > span {
-    animation-range: entry 5% entry 70%;
+    animation-range: cover 5% cover 30%;
   }
 
   .mask-scroll .mask-line:nth-child(3) > span {
-    animation-range: entry 10% entry 78%;
+    animation-range: cover 10% cover 35%;
   }
 
   [data-reveal] {
     transition: none;
     animation: reveal-scroll linear both;
     animation-timeline: view();
-    animation-range: entry 0% entry 52%;
+    animation-range: cover 0% cover 25%;
   }
 }
 
@@ -254,10 +256,12 @@ body {
 }
 
 [data-reveal-image="hidden"] .reveal-image__inner {
+  opacity: 0.3;
   transform: translate3d(0, 100%, 0) scale(1.08);
 }
 
 [data-reveal-image="in"] .reveal-image__inner {
+  opacity: 1;
   transform: translate3d(0, 0, 0) scale(1);
 }
 
@@ -266,16 +270,24 @@ body {
     transition: none;
     animation: image-rise linear both;
     animation-timeline: --reveal-image;
-    animation-range: entry 0% entry 88%;
+    /*
+     * El recorrido no se queda en la fase "entry", que dura lo que el
+     * elemento tarda en entrar (unos 190px en la galería y se pasa de
+     * largo al hacer scroll rápido). Llega hasta la mitad de "cover",
+     * unos 420px: el ascenso se ve entero.
+     */
+    animation-range: cover 0% cover 45%;
   }
 }
 
 @keyframes image-rise {
   from {
+    opacity: 0.3;
     transform: translate3d(0, 100%, 0) scale(1.08);
   }
 
   to {
+    opacity: 1;
     transform: translate3d(0, 0, 0) scale(1);
   }
 }
@@ -299,7 +311,12 @@ body {
   .gradient-rule {
     animation: rule-draw linear both;
     animation-timeline: --gradient-rule;
-    animation-range: entry 0% entry 70%;
+    /*
+     * La regla mide su propio alto (2px), así que la fase "entry"
+     * duraría 2px de scroll y el dibujado sería invisible. "cover"
+     * da un recorrido de unos 215px.
+     */
+    animation-range: cover 0% cover 30%;
   }
 }
 
@@ -448,7 +465,9 @@ body {
   .mask-load .mask-line > span,
   .reveal-load,
   .ken-burns,
-  .menu-item {
+  .menu-item,
+  .reveal-image__inner,
+  .gradient-rule {
     animation: none;
   }
 
@@ -459,6 +478,7 @@ body {
   }
 
   [data-reveal-image] .reveal-image__inner {
+    opacity: 1;
     transform: none;
   }
 }

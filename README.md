@@ -131,6 +131,10 @@ Reglas de la casa:
 - El contenido **nunca** queda invisible si el JavaScript falla: el estado
   oculto solo lo aplica el JS, nunca el HTML del servidor.
 - `prefers-reduced-motion: reduce` desactiva todas las transiciones.
+- Las animaciones ligadas al scroll usan la fase **`cover`**, no `entry`. La
+  fase `entry` dura lo que el elemento tarda en entrar —unos 190px en la
+  galería—, y con scroll rápido la imagen simplemente aparecía. `cover`
+  alarga el recorrido hasta unos 420px y el movimiento se percibe entero.
 
 ## Imágenes
 
