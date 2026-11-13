@@ -152,6 +152,18 @@ Las esculturas se muestran completas (`object-contain` sobre fondo blanco), sin
 recortes. Para cambiar una imagen basta con sobrescribir el archivo conservando
 el nombre.
 
+### Carga de las imágenes
+
+`next/image` aplica `loading="lazy"` por defecto, así que solo se descargan
+las fotos que el visitante va alcanza a ver. La excepción es la imagen de
+portada de cada página: es el elemento **LCP** (el mayor visible al cargar),
+por lo que lleva `loading="eager"` y `fetchPriority="high"` para que empiece
+a descargarse de inmediato.
+
+En Next.js 16 el prop `priority` está deprecado en favor de esas dos
+propiedades; usarlo solo genera el `<link rel="preload">` y deja el aviso
+de LCP en consola.
+
 > **Importante:** Next.js sirve `public/` distinguiendo mayúsculas y
 > minúsculas, aunque el sistema operativo no lo haga. Las extensiones de todas
 > las imágenes van **en minúsculas** (`.jpg`) y el código las referencia con
