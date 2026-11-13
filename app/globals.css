@@ -316,10 +316,13 @@ body {
 /* ---------------------------------------------------------------- */
 
 /*
- * Muestra cuánto se ha avanzado en la página. Es puro CSS: la línea de
- * tiempo `scroll()` sigue el desplazamiento del documento.
+ * Muestra cuánto se ha avanzado en la página. Con la línea de tiempo
+ * `scroll()` es puro CSS; en los navegadores que no la soportan, el
+ * JavaScript escribe la variable --scroll-progress y la barra sigue
+ * funcionando.
  */
 .scroll-progress {
+  transform: scaleX(var(--scroll-progress, 0));
   transform-origin: left center;
 }
 
@@ -337,12 +340,6 @@ body {
 
   to {
     transform: scaleX(1);
-  }
-}
-
-@supports not (animation-timeline: scroll()) {
-  .scroll-progress {
-    display: none;
   }
 }
 

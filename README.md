@@ -141,6 +141,31 @@ Reglas de la casa:
   aparecía de golpe. `cover` alarga el recorrido hasta unos 420px y el
   movimiento se percibe entero.
 
+### Compatibilidad
+
+Las animaciones ligadas al scroll (`animation-timeline`) todavía no son
+universales:
+
+| Función | Chrome / Edge | Safari | Firefox | Opera |
+| --- | --- | --- | --- | --- |
+| `animation-timeline: view()` y `scroll()` | 115+ | 26+ | 159+ | 101+ |
+| `view-timeline-name` | 116+ | 26+ | 159+ | 102+ |
+
+Firefox 159 llegó el 27 de octubre de 2026 y Safari 26 en septiembre de
+2025. En los navegadores anteriores el sitio no pierde ninguna función,
+solo cambia el comportamiento de estas piezas:
+
+| Animación | Sin soporte de `animation-timeline` |
+| --- | --- |
+| Revelado de imágenes | Igual: lo dispara JavaScript, no depende del CSS |
+| Títulos y bloques de texto | Respaldo con `IntersectionObserver` y transición |
+| Regla con degradado | Aparece de golpe, sin dibujarse |
+| Barra de progreso | Se calcula en JavaScript con `--scroll-progress` |
+| Ken Burns, subrayado del navbar, entrada del menú | Igual: son keyframes CSS normales |
+
+Todo lo demás —las tipografías, el diseño y las imágenes— es compatible con
+los navegadores actuales.
+
 ## Imágenes
 
 Las imágenes viven en `public/images/` y se sirven con `next/image`. Hay
