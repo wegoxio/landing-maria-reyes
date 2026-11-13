@@ -1,43 +1,47 @@
 "use client";
 
-import { MouseEvent, type AnchorHTMLAttributes } from "react";
+import React from "react";
+import Link from "next/link";
 
-type SmoothScrollLinkProps = Omit<
-  AnchorHTMLAttributes<HTMLAnchorElement>,
-  "href"
-> & {
-  /**
-   * Ancla interna (`#seccion`) o ruta con ancla (`/#seccion`).
-   * Si el destino no existe en el documento, se deja que el navegador
-   * resuelva la navegación normal.
-   */
+interface SmoothScrollLinkProps extends React.AnchorHTMLAttributes<HTMLAnchorElement> {
   href: string;
-};
+  children: React.ReactNode;
+  className?: string;
+}
 
 export function SmoothScrollLink({
   href,
-  onClick,
   children,
+  className,
+  onClick,
   ...props
 }: SmoothScrollLinkProps) {
-  const handleClick = (event: MouseEvent<HTMLAnchorElement>) => {
-    onClick?.(event);
-    if (event.defaultPrevented) {
-      return;
-    }
+  // Si el href es una ruta de navegación (ej. "/about"), usamos el Link nativo de Next.js
+  if (href.startsWith("/")) {
+    return (
+      <Link href={href} className={className} {...props}>
+        {children}
+      </Link>
+    );
+  }
 
+  // Lógica existente para el scroll suave en anclas internas (ej. "#escultura")
+  const handleClick = (e: React.MouseEvent<HTMLAnchorElement>) => {
+    e.preventDefault();
     const target = document.querySelector<HTMLElement>(href);
     if (!target) {
       return;
     }
-
-    event.preventDefault();
-    target.scrollIntoView({ behavior: "smooth", block: "start" });
-    window.history.pushState(null, "", href);
+    target.scrollIntoView({
+      behavior: "smooth",
+    });
+    if (onClick) {
+      onClick(e);
+    }
   };
 
   return (
-    <a href={href} onClick={handleClick} {...props}>
+    <a href={href} onClick={handleClick} className={className} {...props}>
       {children}
     </a>
   );

@@ -4,8 +4,8 @@ import { BrandWordmark } from "@/components/Common/brand-wordmark";
 import { CONTACT_LINKS } from "@/components/Common/contact-links";
 
 const PROJECT_LINKS = [
-  { href: "#escultura", label: "Escultura" },
-  { href: "#fotografia", label: "Fotografía" },
+  { href: "/projects/sculptures", label: "Escultura" },
+  { href: "/projects/photography", label: "Fotografía" },
 ];
 
 const CONTACT_ITEMS = [
@@ -89,7 +89,7 @@ export async function FooterSection() {
               <ul className="mt-4">
                 <li>
                   <Link
-                    href="/sobre-mi"
+                    href="/about"
                     className="text-[14px] text-ink/80 transition-colors hover:text-rust"
                   >
                     Biografía

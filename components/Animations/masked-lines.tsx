@@ -49,7 +49,7 @@ export function MaskedLines({
     }
 
     const wrappers = Array.from(
-      container.querySelectorAll<HTMLElement>("[data-mask-line]")
+      container.querySelectorAll<HTMLElement>("[data-mask-line]"),
     );
 
     if (wrappers.length === 0) {
@@ -66,7 +66,7 @@ export function MaskedLines({
     wrappers.forEach((wrapper, index) => {
       wrapper.style.setProperty(
         "--mask-delay",
-        `${delayMs + index * staggerMs}ms`
+        `${delayMs + index * staggerMs}ms`,
       );
 
       const inner = wrapper.firstElementChild;

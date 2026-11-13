@@ -1,18 +1,34 @@
 "use client";
 
 import Link from "next/link";
+import { usePathname } from "next/navigation";
 import { useEffect } from "react";
 import { CONTACT_LINKS } from "@/components/Common/contact-links";
+import { getNavActiveState } from "@/components/Common/nav-active-state";
 
 type HeroFullscreenMenuProps = {
   isOpen: boolean;
   onClose: () => void;
 };
 
+const MENU_ITEM_BASE =
+  "menu-item font-display text-[42px] leading-none font-light transition-colors";
+
+/**
+ * Igual que en la cabecera, el color se elige en un solo sitio: la sección
+ * activa se pinta en terracota y el resto en papel.
+ */
+function menuItemClass(isActive: boolean) {
+  return `${MENU_ITEM_BASE} ${isActive ? "text-rust" : "text-paper"}`;
+}
+
 export function HeroFullscreenMenu({
   isOpen,
   onClose,
 }: HeroFullscreenMenuProps) {
+  const pathname = usePathname();
+  const active = getNavActiveState(pathname);
+
   useEffect(() => {
     if (!isOpen) {
       return;
@@ -48,21 +64,32 @@ export function HeroFullscreenMenu({
         </button>
       </div>
 
-      <nav className="flex flex-1 flex-col justify-center gap-8 px-5">
+      <nav className="flex flex-1 flex-col justify-center gap-6 px-5">
         <Link
-          href="#about"
+          href="/about"
           onClick={onClose}
-          className="font-display text-[42px] leading-none font-light text-paper"
+          aria-current={active.about ? "page" : undefined}
+          className={menuItemClass(active.about)}
         >
           Sobre mí
         </Link>
 
         <Link
-          href="#servicios"
+          href="/projects/sculptures"
           onClick={onClose}
-          className="font-display text-[42px] leading-none font-light text-paper"
+          aria-current={active.sculptures ? "page" : undefined}
+          className={menuItemClass(active.sculptures)}
         >
-          Proyectos
+          Escultura
+        </Link>
+
+        <Link
+          href="/projects/photography"
+          onClick={onClose}
+          aria-current={active.photography ? "page" : undefined}
+          className={menuItemClass(active.photography)}
+        >
+          Fotografía
         </Link>
 
         <a
@@ -70,7 +97,7 @@ export function HeroFullscreenMenu({
           target="_blank"
           rel="noopener noreferrer"
           onClick={onClose}
-          className="font-display text-[42px] leading-none font-light text-paper"
+          className={menuItemClass(false)}
         >
           Contacto
         </a>

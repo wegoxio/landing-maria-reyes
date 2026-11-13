@@ -1,89 +1,196 @@
+import React, { ReactNode } from "react";
 import Image from "next/image";
 import { MaskedLines } from "@/components/Animations/masked-lines";
-import { CONTACT_LINKS } from "@/components/Common/contact-links";
 import type { HashHref } from "@/components/Common/hash-href";
 
-type HeroAction =
-  | { kind: "external"; href: string; label: string }
-  | { kind: "hash"; href: HashHref; label: string };
+export type HeroAction =
+  | {
+      kind: "external";
+      href: string;
+      label: string;
+      variant?: "outline" | "solid";
+    }
+  | {
+      kind: "hash";
+      href: HashHref;
+      label: string;
+      variant?: "outline" | "solid";
+    };
 
-const HERO_ACTIONS: HeroAction[] = [
-  { kind: "external", href: CONTACT_LINKS.whatsapp, label: "Contacto" },
+interface HeroSectionProps {
+  id?: string;
+  tagline?: string;
+  showTaglineLine?: boolean;
+  lines?: ReactNode[];
+  description?: string;
+  actions?: HeroAction[];
+  imageSrc?: string;
+  imageAlt?: string;
+  backgroundWatermark?: string;
+  darkBackground?: boolean;
+  fullBackgroundImage?: boolean;
+  lightTaglineOnDark?: boolean;
+  gradientRule?: ReactNode;
+  className?: string;
+}
+
+const DEFAULT_ACTIONS: HeroAction[] = [
   { kind: "hash", href: "#escultura", label: "Escultura" },
   { kind: "hash", href: "#fotografia", label: "Fotografía" },
 ];
 
-export function HeroSection() {
+const DEFAULT_LINES = [
+  <span key="desde">Desde la</span>,
+  <span key="mirada">mirada a</span>,
+  <span key="materia" className="italic text-rust">
+    la materia
+  </span>,
+];
+
+export function HeroSection({
+  id = "home",
+  tagline = "Escultura · Fotografía",
+  showTaglineLine = true,
+  lines = DEFAULT_LINES,
+  description = "Exploro la forma a través de la escultura y la fotografía. Dos maneras de observar, crear y compartir una mirada personal.",
+  actions = DEFAULT_ACTIONS,
+  imageSrc = "/images/landing/hero-escultura.jpg",
+  imageAlt = "Escultura de María del Carmen Reyes Garrido",
+  backgroundWatermark,
+  darkBackground = false,
+  fullBackgroundImage = false,
+  lightTaglineOnDark = false,
+  gradientRule = undefined,
+  className = "",
+}: HeroSectionProps) {
   return (
     <section
-      id="home"
-      className="relative w-full bg-white pt-[118px] pb-14 md:pt-[150px] md:pb-20"
+      id={id}
+      className={`relative w-full pt-[118px] pb-0 md:pt-[150px] overflow-hidden transition-colors duration-300 ${
+        darkBackground ? "text-white" : "bg-white text-ink"
+      }`}
+      style={
+        darkBackground && !fullBackgroundImage
+          ? {
+              backgroundColor: "#12100e",
+              backgroundImage: `
+                radial-gradient(circle at 15% 20%, rgba(122, 143, 160, 0.15) 0%, transparent 50%),
+                radial-gradient(circle at 85% 80%, rgba(196, 105, 74, 0.22) 0%, transparent 50%)
+              `,
+            }
+          : undefined
+      }
     >
-      <div className="mx-auto grid w-full max-w-full gap-12 px-6 md:grid-cols-[1fr_1.1fr] md:items-center md:px-11">
-        <div>
-          <p className="flex items-center font-label text-[11px] tracking-[0.26em] text-rust uppercase md:text-[12px]">
-            <span className="mr-4 inline-block h-px w-9 bg-rust/60" />
-            Escultura · Fotografía
-          </p>
+      {fullBackgroundImage && (
+        <div className="absolute inset-0 z-0">
+          <Image
+            src={imageSrc}
+            alt={imageAlt}
+            fill
+            priority
+            className="ken-burns object-cover object-center"
+          />
+          <div className="absolute inset-0 bg-black/65" />
+        </div>
+      )}
 
+      <div className="relative z-10 mx-auto grid w-full max-w-full gap-12 px-6 pb-14 md:grid-cols-[1fr_1.1fr] md:items-center md:px-11 md:pb-16">
+        <div className="md:pb-10">
+          <p
+            className={`flex items-center font-label text-[11px] tracking-[0.26em] uppercase md:text-[12px] ${
+              lightTaglineOnDark ? "text-white/90" : "text-rust"
+            }`}
+          >
+            {showTaglineLine && (
+              <span
+                className={`mr-4 inline-block h-px w-9 ${
+                  lightTaglineOnDark ? "bg-white/70" : "bg-rust/60"
+                }`}
+              />
+            )}
+            {tagline}
+          </p>
           <MaskedLines
-            className="mt-7 font-display text-[42px] leading-[1.02] font-light text-ink sm:text-[54px] md:text-[64px] lg:text-[72px]"
+            className={`mt-7 font-display text-[42px] leading-[1.02] font-light sm:text-[54px] md:text-[64px] lg:text-[72px] ${
+              darkBackground ? "text-white" : "text-ink"
+            }`}
             delayMs={80}
             staggerMs={110}
             mode="load"
-            lines={[
-              <span key="desde">Desde la</span>,
-              <span key="mirada">mirada a</span>,
-              <span key="materia" className="italic text-rust">
-                la materia
-              </span>,
-            ]}
+            lines={lines}
           />
 
-          <p className="mt-8 max-w-[430px] text-[14px] leading-[1.9] text-taupe md:text-[15px]">
-            Exploro la forma a través de la escultura y la fotografía. Dos
-            maneras de observar, crear y compartir una mirada personal.
+          <p
+            className={`mt-8 max-w-[430px] text-[14px] leading-[1.9] md:text-[15px] ${
+              darkBackground ? "text-[#D1C7BD]/90" : "text-taupe"
+            }`}
+          >
+            {description}
           </p>
-
           <div className="mt-9 flex flex-wrap items-center gap-3">
-            {HERO_ACTIONS.map((action) =>
-              action.kind === "external" ? (
+            {actions.map((action) => {
+              const isSolid = action.variant === "solid";
+              const buttonStyles = isSolid
+                ? "bg-rust text-white border-rust hover:bg-rust/90"
+                : darkBackground
+                  ? "border-white/30 text-white hover:border-rust hover:bg-rust hover:text-white"
+                  : "border-ink/25 text-ink hover:border-rust hover:bg-rust hover:text-paper";
+
+              return (
                 <a
                   key={action.label}
                   href={action.href}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="inline-flex h-10 items-center justify-center rounded-full border border-ink/25 px-6 font-label text-[11px] tracking-[0.2em] text-ink uppercase transition-colors duration-300 hover:border-rust hover:bg-rust hover:text-paper"
+                  target={action.kind === "external" ? "_blank" : undefined}
+                  rel={
+                    action.kind === "external"
+                      ? "noopener noreferrer"
+                      : undefined
+                  }
+                  className={`inline-flex h-10 items-center rounded-full justify-center border px-6 font-label text-[11px] tracking-[0.2em] uppercase transition-colors duration-300 ${buttonStyles} ${className}`}
                 >
                   {action.label}
                 </a>
-              ) : (
-                <a
-                  key={action.label}
-                  href={action.href}
-                  className="inline-flex h-10 items-center justify-center rounded-full border border-ink/25 px-6 font-label text-[11px] tracking-[0.2em] text-ink uppercase transition-colors duration-300 hover:border-rust hover:bg-rust hover:text-paper"
-                >
-                  {action.label}
-                </a>
-              )
-            )}
+              );
+            })}
           </div>
         </div>
 
-        {/* Contenedor de la imagen ampliado y con proporción horizontal */}
-        <div className="relative mx-auto w-full max-w-[480px] md:max-w-[580px] lg:max-w-[640px]">
-          <div className="relative aspect-[4/3] w-full overflow-hidden bg-white">
-            <Image
-              src="/images/landing/hero-escultura.jpg"
-              alt="Escultura de María del Carmen Reyes Garrido"
-              fill
-              priority
-              sizes="(max-width: 768px) 90vw, 600px"
-              className="object-contain"
-            />
+        {!fullBackgroundImage && (
+          <div className="grid grid-cols-1 grid-rows-1 items-end w-full max-w-120 md:max-w-145 lg:max-w-160 mx-auto h-full">
+            {backgroundWatermark && (
+              <div className="col-start-1 row-start-1 z-0 select-none pointer-events-none pb-2.5">
+                <span
+                  className={`font-display text-[150px] sm:text-[190px] md:text-[230px] lg:text-[270px] font-light tracking-tight uppercase leading-none block transform translate-x-[-30%] translate-y-[10%] md:translate-x-[-15%] lg:translate-x-[-10%] ${
+                    darkBackground ? "text-white/4" : "text-ink/[0.03]"
+                  }`}
+                >
+                  {backgroundWatermark}
+                </span>
+              </div>
+            )}
+
+            <div className="col-start-1 row-start-1 z-10 w-full mb-10 md:mb-16">
+              <div
+                className={`relative aspect-[4/3] w-full overflow-hidden ${
+                  darkBackground ? "bg-transparent" : "bg-white"
+                }`}
+              >
+                <Image
+                  src={imageSrc}
+                  alt={imageAlt}
+                  fill
+                  priority
+                  sizes="(max-width: 768px) 90vw, 600px"
+                  className="ken-burns object-contain"
+                />
+              </div>
+            </div>
           </div>
-        </div>
+        )}
       </div>
+      {gradientRule && (
+        <div className="relative z-10 w-full max-w-full">{gradientRule}</div>
+      )}
     </section>
   );
 }

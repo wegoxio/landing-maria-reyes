@@ -1,5 +1,7 @@
 import Image from "next/image";
+import Link from "next/link";
 import { MaskedLines } from "@/components/Animations/masked-lines";
+import { RevealImage } from "@/components/Animations/reveal-image";
 import { RevealOnScroll } from "@/components/Animations/reveal-on-scroll";
 
 const COLECCION = [
@@ -68,7 +70,6 @@ export function PlatformSection() {
       className="w-full bg-paper pt-16 pb-16 md:pt-20 md:pb-20"
     >
       <div className="mx-auto w-full max-w-full px-6 md:px-11">
-        {/* Cabecera inicial de Escultura */}
         <div className="flex flex-col items-center text-center">
           <RevealOnScroll>
             <p className="font-label text-[11px] tracking-[0.26em] text-rust uppercase">
@@ -95,58 +96,58 @@ export function PlatformSection() {
             </p>
           </RevealOnScroll>
         </div>
-
-        {/* Grid de Colección Esculturas */}
         <div
           id="escultura"
           className="mt-12 grid gap-5 sm:grid-cols-2 lg:grid-cols-3 lg:gap-6"
         >
           {COLECCION.map((item, index) => (
-            <RevealOnScroll key={item.id} delayMs={70 + index * 70}>
-              <article
-                id={item.id}
-                className="flex h-full flex-col bg-paper p-3 md:p-4"
+            <article
+              key={item.id}
+              id={item.id}
+              className="flex h-full flex-col bg-paper p-3 md:p-4"
+            >
+              <RevealImage
+                className="aspect-[4/5] w-full"
+                delayMs={70 + index * 70}
               >
-                <div className="relative aspect-[4/5] w-full overflow-hidden">
-                  <Image
-                    src={item.image}
-                    alt={item.alt}
-                    fill
-                    sizes="(max-width: 640px) 92vw, (max-width: 1024px) 46vw, 30vw"
-                    className="object-contain"
-                  />
-                </div>
+                <Image
+                  src={item.image}
+                  alt={item.alt}
+                  fill
+                  sizes="(max-width: 640px) 92vw, (max-width: 1024px) 46vw, 30vw"
+                  className="object-contain transition-transform duration-700 hover:scale-[1.03]"
+                />
+              </RevealImage>
 
-                <div className="flex flex-1 flex-col px-1 pt-5">
-                  <p className="font-label text-[15px] tracking-[0.24em] text-rust uppercase">
-                    {item.label}
-                  </p>
+              <RevealOnScroll
+                delayMs={100 + index * 70}
+                className="flex flex-1 flex-col px-1 pt-5"
+              >
+                <p className="font-label text-[15px] tracking-[0.24em] text-rust uppercase">
+                  {item.label}
+                </p>
 
-                  <h3 className="mt-2 font-display text-[28px] leading-tight font-light text-ink md:text-[24px]">
-                    {item.title}
-                  </h3>
+                <h3 className="mt-2 font-display text-[28px] leading-tight font-light text-ink md:text-[24px]">
+                  {item.title}
+                </h3>
 
-                  <p className="mt-2 text-[15px] leading-[1.7] text-taupe">
-                    {item.description}
-                  </p>
-                </div>
-              </article>
-            </RevealOnScroll>
+                <p className="mt-2 text-[15px] leading-[1.7] text-taupe">
+                  {item.description}
+                </p>
+              </RevealOnScroll>
+            </article>
           ))}
         </div>
 
         <RevealOnScroll delayMs={110}>
-          <a
-            href="/proyectos"
+          <Link
+            href="/projects/sculptures"
             className="mt-12 flex h-12 w-full items-center justify-center border border-ink/20 font-label text-[15px] tracking-[0.24em] text-ink uppercase transition-colors duration-300 hover:border-rust hover:bg-rust hover:text-paper md:mt-14"
           >
             Ver colección de esculturas
-          </a>
+          </Link>
         </RevealOnScroll>
-
-        {/* SECCIÓN DE FOTOGRAFÍA (Textos arriba, imagen centrada y descripciones abajo) */}
         <div className="mt-20 md:mt-28">
-          {/* Cabecera de Fotografía */}
           <RevealOnScroll>
             <div className="max-w-[700px]">
               <p className="font-label text-[12px] tracking-[0.24em] text-rust uppercase">
@@ -167,7 +168,7 @@ export function PlatformSection() {
 
           <RevealOnScroll delayMs={80}>
             <div className="mt-10">
-              <div className="relative aspect-[16/9] w-full overflow-hidden bg-white">
+              <RevealImage className="aspect-[16/9] w-full bg-white">
                 <Image
                   src="/images/landing/featured-photograph.jpg"
                   alt="Curvas, estratos y luz en el interior del cañón"
@@ -175,9 +176,8 @@ export function PlatformSection() {
                   sizes="100vw"
                   className="object-cover"
                 />
-              </div>
+              </RevealImage>
 
-              {/* Contenedor con los textos cercanos */}
               <div className="mt-3 flex flex-wrap items-center gap-x-8 gap-y-1 text-[12px] tracking-[0.15em] font-label uppercase">
                 <span className="text-rust">UTAH &nbsp;·&nbsp; 2022</span>
                 <span className="text-taupe text-[12px] tracking-normal">
@@ -191,41 +191,41 @@ export function PlatformSection() {
             className="mt-16 grid gap-8 sm:grid-cols-2 lg:grid-cols-3 lg:gap-6"
           >
             {FOTOGRAFIAS.map((photo, index) => (
-              <RevealOnScroll key={photo.id} delayMs={70 + index * 70}>
-                <article className="flex flex-col">
-                  <div className="w-full overflow-hidden bg-white">
-                    <Image
-                      src={photo.image}
-                      alt={photo.alt}
-                      width={600}
-                      height={450}
-                      sizes="(max-width: 640px) 92vw, (max-width: 1024px) 46vw, 30vw"
-                      className="w-full h-auto object-cover"
-                    />
-                  </div>
-                  <div className="mt-4">
-                    <p className="font-label text-[14px] tracking-[0.2em] text-rust uppercase">
-                      {photo.year}
-                    </p>
-                    <h4 className="mt-1 font-display text-[22px] font-light text-ink">
-                      {photo.title}
-                    </h4>
-                    <p className="mt-2 text-[15px] leading-[1.7] text-taupe">
-                      {photo.description}
-                    </p>
-                  </div>
-                </article>
-              </RevealOnScroll>
+              <article key={photo.id} className="flex flex-col">
+                <RevealImage
+                  className="aspect-[4/3] w-full bg-white"
+                  delayMs={70 + index * 70}
+                >
+                  <Image
+                    src={photo.image}
+                    alt={photo.alt}
+                    fill
+                    sizes="(max-width: 640px) 92vw, (max-width: 1024px) 46vw, 30vw"
+                    className="object-cover transition-transform duration-700 hover:scale-[1.04]"
+                  />
+                </RevealImage>
+                <RevealOnScroll delayMs={100 + index * 70} className="mt-4">
+                  <p className="font-label text-[14px] tracking-[0.2em] text-rust uppercase">
+                    {photo.year}
+                  </p>
+                  <h4 className="mt-1 font-display text-[22px] font-light text-ink">
+                    {photo.title}
+                  </h4>
+                  <p className="mt-2 text-[15px] leading-[1.7] text-taupe">
+                    {photo.description}
+                  </p>
+                </RevealOnScroll>
+              </article>
             ))}
           </div>
 
           <RevealOnScroll delayMs={120}>
-            <a
-              href="/fotografia"
+            <Link
+              href="/projects/photography"
               className="mt-14 flex h-12 w-full items-center justify-center border border-ink/20 font-label text-[15px] tracking-[0.24em] text-ink uppercase transition-colors duration-300 hover:border-rust hover:bg-rust hover:text-paper"
             >
               Ver galería fotográfica
-            </a>
+            </Link>
           </RevealOnScroll>
         </div>
       </div>
