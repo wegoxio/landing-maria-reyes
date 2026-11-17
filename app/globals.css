@@ -363,6 +363,40 @@ h4 {
 }
 
 /* ---------------------------------------------------------------- */
+/* Ficha técnica: la card se voltea para mostrar los datos          */
+/* ---------------------------------------------------------------- */
+
+/*
+ * El volteado usa rotaciones en 3D.
+ *
+ * `perspective` da la sensación de profundidad al girar. `preserve-3d`
+ * mantiene las dos caras en el mismo espacio: una está girada 180 grados
+ * respecto de la otra, así que al girar el contenedor solo se ve una de
+ * las dos y la otra queda de espaldas (invisible).
+ */
+.flip-card {
+  perspective: 1400px;
+}
+
+.flip-card__inner {
+  transform-style: preserve-3d;
+  transition: transform 760ms cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.flip-card__inner.is-flipped {
+  transform: rotateY(180deg);
+}
+
+.flip-card__face {
+  backface-visibility: hidden;
+  -webkit-backface-visibility: hidden;
+}
+
+.flip-card__face--back {
+  transform: rotateY(180deg);
+}
+
+/* ---------------------------------------------------------------- */
 /* Barra de progreso de lectura                                      */
 /* ---------------------------------------------------------------- */
 
@@ -553,6 +587,11 @@ h4 {
   .mask-line > span,
   [data-reveal],
   .reveal-image__inner {
+    transition: none;
+  }
+
+  /* El volteado sigue funcionando, pero sin la animación. */
+  .flip-card__inner {
     transition: none;
   }
 }
