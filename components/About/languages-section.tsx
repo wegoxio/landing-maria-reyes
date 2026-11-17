@@ -1,7 +1,12 @@
 import React, { ReactNode } from "react";
-import { MaskedLines } from "@/components/Animations/masked-lines";
 import { RevealOnScroll } from "@/components/Animations/reveal-on-scroll";
 import { GradientRule } from "@/components/Common/gradient-rule";
+import {
+  BodyText,
+  CardTitle,
+  Eyebrow,
+  SectionTitle,
+} from "@/components/Typography/typography";
 
 export interface LanguageItem {
   number: string; // Ej: "01", "02"
@@ -54,25 +59,18 @@ export function LanguagesSection({
       <div className="mx-auto w-full max-w-full px-6 md:px-11">
         <RevealOnScroll>
           <div className="flex items-center gap-4">
-            <p className="font-label text-[11px] tracking-[0.26em] text-rust uppercase">
+            <Eyebrow as="p" tone="rust">
               {tagline}
-            </p>
+            </Eyebrow>
             <GradientRule className="h-px! flex-1 bg-ink/12 max-w-22.5" />
           </div>
           <GradientRule className="h-2! mt-4 max-w-37.5 rounded-2xl" />
         </RevealOnScroll>
 
-        <MaskedLines
-          className="mt-7 max-w-162.5 font-display text-[32px] leading-[1.12] font-light text-ink sm:text-[40px] md:text-[48px]"
-          delayMs={60}
-          staggerMs={100}
-          lines={lines}
-        />
+        <SectionTitle lines={lines} className="mt-7 max-w-162.5" />
 
         <RevealOnScroll delayMs={80}>
-          <p className="mt-6 max-w-237.5 text-[14px] leading-[1.9] text-taupe md:text-[15px]">
-            {sectionDescription}
-          </p>
+          <BodyText className="mt-6 max-w-237.5">{sectionDescription}</BodyText>
         </RevealOnScroll>
 
         <div className="mt-12 flex flex-col gap-6 md:mt-14 max-w-full">
@@ -90,13 +88,9 @@ export function LanguagesSection({
                     className={`h-0.5 w-10 mb-6 ${item.lineColor || "bg-rust"}`}
                   />
 
-                  <h3 className="font-display text-[26px] sm:text-[32px] font-light text-ink">
-                    {item.title}
-                  </h3>
+                  <CardTitle>{item.title}</CardTitle>
 
-                  <p className="mt-4 text-[14px] leading-[1.9] text-taupe md:text-[15px]">
-                    {item.description}
-                  </p>
+                  <BodyText className="mt-4">{item.description}</BodyText>
                 </div>
               </div>
             </RevealOnScroll>

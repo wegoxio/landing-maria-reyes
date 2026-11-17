@@ -49,7 +49,7 @@ export function HeroFullscreenMenu({
   return (
     <div className="fixed inset-0 z-[9998] flex flex-col bg-ink text-paper md:hidden">
       <div className="flex h-[76px] items-center justify-between border-b border-paper/12 px-5">
-        <span className="font-label text-[12px] tracking-[0.34em] uppercase">
+        <span className="font-label text-[15px] leading-[1.45] font-semibold tracking-[0.2em] uppercase">
           María del Carmen
           <br />
           Reyes Garrido
@@ -58,7 +58,7 @@ export function HeroFullscreenMenu({
           type="button"
           onClick={onClose}
           aria-label="Cerrar menú"
-          className="flex h-10 w-10 items-center justify-center border border-paper/25 text-[18px] leading-none text-paper transition-colors hover:bg-paper/10"
+          className="flex h-10 w-10 items-center justify-center border border-paper/25 text-[20px] leading-none text-paper transition-colors hover:bg-paper/10"
         >
           ×
         </button>
@@ -102,7 +102,7 @@ export function HeroFullscreenMenu({
         </Link>
       </nav>
 
-      <p className="px-5 pb-8 font-label text-[10px] tracking-[0.3em] text-paper/45 uppercase">
+      <p className="px-5 pb-8 font-label text-label tracking-[0.28em] text-paper/55 uppercase">
         Estudio de arte y diseño · Caracas
       </p>
     </div>

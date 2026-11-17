@@ -6,6 +6,7 @@ import { FooterSection } from "@/components/Footer/footer-section";
 import { SculpturesGridSection } from "@/components/project/sculptures/sculptures-grid-section";
 import { HeroMediaBand } from "@/components/Hero/hero-media-band";
 import { SculptureDetailsSection } from "@/components/project/sculptures/sculpture-details-section";
+import { SculptureFlipProvider } from "@/components/project/sculptures/sculpture-flip-context";
 
 export default function SculpturesPage() {
   return (
@@ -36,13 +37,19 @@ export default function SculpturesPage() {
         className="rounded-sm!"
         gradientRule={<GradientRule className="h-3!" />}
       />
-      <SculpturesGridSection gradientRule={<GradientRule className="h-3!" />} />
-      <HeroMediaBand
-        imageSrc="/images/landing/hero-escultura.jpg"
-        imageAlt="Escultura de María del Carmen Reyes Garrido"
-        gradientRule={<GradientRule className="h-3!" />}
-      />
-      <SculptureDetailsSection />
+      {/*
+        El proveedor mantiene el estado del volteado: las cards de la
+        colección y el botón "Ver obra" de abajo necesitan hablar.
+      */}
+      <SculptureFlipProvider>
+        <SculpturesGridSection gradientRule={<GradientRule className="h-3!" />} />
+        <HeroMediaBand
+          imageSrc="/images/landing/hero-escultura.jpg"
+          imageAlt="Escultura de María del Carmen Reyes Garrido"
+          gradientRule={<GradientRule className="h-3!" />}
+        />
+        <SculptureDetailsSection />
+      </SculptureFlipProvider>
       <BecomePartnerSection />
       <FooterSection />
     </main>

@@ -2,6 +2,11 @@ import Link from "next/link";
 import { cacheLife } from "next/cache";
 import { BrandWordmark } from "@/components/Common/brand-wordmark";
 import { CONTACT_LINKS, CONTACT_PAGE_PATH } from "@/components/Common/contact-links";
+import {
+  BodyText,
+  Eyebrow,
+  MetaText,
+} from "@/components/Typography/typography";
 
 const PROJECT_LINKS = [
   { href: "/projects/sculptures", label: "Escultura" },
@@ -41,20 +46,20 @@ export async function FooterSection() {
           <div>
             <BrandWordmark />
 
-            <p className="mt-5 max-w-[300px] text-[13px] leading-[1.8] text-taupe">
+            <BodyText className="mt-5 max-w-[340px]">
               Desde la mirada a la materia. Escultura y fotografía en diálogo.
-            </p>
+            </BodyText>
 
             <div className="mt-9">
-              <p className="font-label text-[11px] tracking-[0.24em] text-rust uppercase">
+              <Eyebrow as="p" tone="rust">
                 Proyectos
-              </p>
+              </Eyebrow>
               <ul className="mt-4 space-y-3">
                 {PROJECT_LINKS.map((link) => (
                   <li key={link.label}>
                     <Link
                       href={link.href}
-                      className="text-[14px] text-ink/80 transition-colors hover:text-rust"
+                      className="text-body text-ink/80 transition-colors hover:text-rust"
                     >
                       {link.label}
                     </Link>
@@ -66,14 +71,14 @@ export async function FooterSection() {
 
           <div>
             <div>
-              <p className="font-label text-[11px] tracking-[0.24em] text-rust uppercase">
+              <Eyebrow as="p" tone="rust">
                 Sobre mí
-              </p>
+              </Eyebrow>
               <ul className="mt-4">
                 <li>
                   <Link
                     href="/about"
-                    className="text-[14px] text-ink/80 transition-colors hover:text-rust"
+                    className="text-body text-ink/80 transition-colors hover:text-rust"
                   >
                     Biografía
                   </Link>
@@ -82,23 +87,23 @@ export async function FooterSection() {
             </div>
 
             <div className="mt-9">
-              <p className="font-label text-[11px] tracking-[0.24em] text-rust uppercase">
+              <Eyebrow as="p" tone="rust">
                 Contacto
-              </p>
+              </Eyebrow>
               <ul className="mt-4 space-y-3">
                 {CONTACT_ITEMS.map((link) => (
                   <li key={link.label}>
                     {link.internal ? (
                       <Link
                         href={link.href}
-                        className="text-[14px] text-ink/80 transition-colors hover:text-rust"
+                        className="text-body text-ink/80 transition-colors hover:text-rust"
                       >
                         {link.label}
                       </Link>
                     ) : (
                       <a
                         href={link.href}
-                        className="text-[14px] text-ink/80 transition-colors hover:text-rust"
+                        className="text-body text-ink/80 transition-colors hover:text-rust"
                       >
                         {link.label}
                       </a>
@@ -111,9 +116,9 @@ export async function FooterSection() {
         </div>
 
         <div className="mt-12 flex flex-col gap-6 border-t border-ink/12 pt-7 md:mt-14 md:flex-row md:items-center md:justify-between">
-          <p className="text-[13px] text-taupe">
+          <MetaText as="p" tone="taupe">
             © {year} María del Carmen Reyes Garrido · Escultura · Fotografía
-          </p>
+          </MetaText>
 
           <ul className="flex items-center gap-3">
             {SOCIALS.map((social) => (
@@ -123,7 +128,7 @@ export async function FooterSection() {
                   target="_blank"
                   rel="noopener noreferrer"
                   aria-label={social.label}
-                  className="flex h-10 w-10 items-center justify-center rounded-full border border-ink/20 font-label text-[15px] text-ink/70 transition-colors duration-300 hover:border-rust hover:bg-rust hover:text-paper"
+                  className="flex h-11 w-11 items-center justify-center rounded-full border border-ink/20 font-label text-[17px] text-ink/70 transition-colors duration-300 hover:border-rust hover:bg-rust hover:text-paper"
                 >
                   {social.short}
                 </a>

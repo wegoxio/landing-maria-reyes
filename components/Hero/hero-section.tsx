@@ -1,6 +1,11 @@
 import React, { ReactNode } from "react";
 import Image from "next/image";
-import { MaskedLines } from "@/components/Animations/masked-lines";
+import {
+  BUTTON_LABEL_CLASS,
+  BodyText,
+  DisplayTitle,
+  Eyebrow,
+} from "@/components/Typography/typography";
 import type { HashHref } from "@/components/Common/hash-href";
 
 export type HeroAction =
@@ -95,12 +100,17 @@ export function HeroSection({
         </div>
       )}
 
-      <div className="relative z-10 mx-auto grid w-full max-w-full gap-12 px-6 pb-14 md:grid-cols-[1fr_1.1fr] md:items-center md:px-11 md:pb-16">
+      {/*
+        La columna del texto es algo más ancha que la de la imagen y el
+        espacio entre columnas es corto: así el bloque de texto llena su
+        columna y la pieza queda cerca, sin un hueco vacío en el medio.
+      */}
+      <div className="relative z-10 mx-auto grid w-full max-w-full gap-10 px-6 pb-14 md:grid-cols-[1.08fr_1fr] md:items-center md:px-11 md:pb-16">
         <div className="md:pb-10">
-          <p
-            className={`flex items-center font-label text-[11px] tracking-[0.26em] uppercase md:text-[12px] ${
-              lightTaglineOnDark ? "text-white/90" : "text-rust"
-            }`}
+          <Eyebrow
+            as="p"
+            tone={lightTaglineOnDark ? "paper" : "rust"}
+            className="flex items-center"
           >
             {showTaglineLine && (
               <span
@@ -110,24 +120,26 @@ export function HeroSection({
               />
             )}
             {tagline}
-          </p>
-          <MaskedLines
-            className={`mt-7 font-display text-[42px] leading-[1.02] font-light sm:text-[54px] md:text-[64px] lg:text-[72px] ${
-              darkBackground ? "text-white" : "text-ink"
-            }`}
+          </Eyebrow>
+
+          <DisplayTitle
+            lines={lines}
+            mode="load"
             delayMs={80}
             staggerMs={110}
-            mode="load"
-            lines={lines}
+            tone={darkBackground ? "paper" : "ink"}
+            className="mt-7"
           />
 
-          <p
-            className={`mt-8 max-w-[430px] text-[14px] leading-[1.9] md:text-[15px] ${
-              darkBackground ? "text-[#D1C7BD]/90" : "text-taupe"
+          <BodyText
+            tone={darkBackground ? "current" : "taupe"}
+            className={`mt-8 max-w-[560px] ${
+              darkBackground ? "text-[#D1C7BD]/90" : ""
             }`}
           >
             {description}
-          </p>
+          </BodyText>
+
           <div className="mt-9 flex flex-wrap items-center gap-3">
             {actions.map((action) => {
               const isSolid = action.variant === "solid";
@@ -147,7 +159,7 @@ export function HeroSection({
                       ? "noopener noreferrer"
                       : undefined
                   }
-                  className={`inline-flex h-10 items-center rounded-full justify-center border px-6 font-label text-[11px] tracking-[0.2em] uppercase transition-colors duration-300 ${buttonStyles} ${className}`}
+                  className={`inline-flex h-12 items-center rounded-full justify-center border px-7 ${BUTTON_LABEL_CLASS} transition-colors duration-300 ${buttonStyles} ${className}`}
                 >
                   {action.label}
                 </a>
@@ -157,7 +169,7 @@ export function HeroSection({
         </div>
 
         {!fullBackgroundImage && (
-          <div className="grid grid-cols-1 grid-rows-1 items-end w-full max-w-120 md:max-w-145 lg:max-w-160 mx-auto h-full">
+          <div className="grid grid-cols-1 grid-rows-1 items-end w-full max-w-full mx-auto h-full">
             {backgroundWatermark && (
               <div className="col-start-1 row-start-1 z-0 select-none pointer-events-none pb-2.5">
                 <span
@@ -170,9 +182,14 @@ export function HeroSection({
               </div>
             )}
 
+            {/*
+              La fotografía de la escultura es cuadrada, así que el marco
+              también lo es: así la pieza ocupa todo el ancho de su columna y
+              no deja franjas vacías a los lados.
+            */}
             <div className="col-start-1 row-start-1 z-10 w-full mb-10 md:mb-16">
               <div
-                className={`relative aspect-[4/3] w-full overflow-hidden ${
+                className={`relative aspect-square w-full overflow-hidden ${
                   darkBackground ? "bg-transparent" : "bg-white"
                 }`}
               >
@@ -183,7 +200,7 @@ export function HeroSection({
                   loading="eager"
                   fetchPriority="high"
                   sizes="(max-width: 768px) 90vw, 600px"
-                  className="ken-burns object-contain"
+                  className="ken-burns-close object-contain"
                 />
               </div>
             </div>

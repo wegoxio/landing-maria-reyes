@@ -2,6 +2,7 @@ import Image from "next/image";
 import { RevealImage } from "@/components/Animations/reveal-image";
 import { RevealOnScroll } from "@/components/Animations/reveal-on-scroll";
 import { GradientRule } from "@/components/Common/gradient-rule";
+import { Eyebrow, Subtitle } from "@/components/Typography/typography";
 
 export function HeroStatement() {
   return (
@@ -21,13 +22,17 @@ export function HeroStatement() {
           delayMs={90}
           className="flex flex-col items-end justify-end bg-[linear-gradient(135deg,#201613_0%,#2a201c_48%,#20292d_100%)] px-7 py-9 text-right md:px-9 md:py-10"
         >
-          <p className="font-display text-[19px] leading-[1.45] font-light text-paper/90 italic md:text-[20px]">
+          <Subtitle
+            as="p"
+            tone="current"
+            className="text-paper/90 italic"
+          >
             &quot;Una mirada, una sesión, un proceso&quot;
-          </p>
+          </Subtitle>
 
-          <p className="mt-5 font-label text-[10px] tracking-[0.22em] text-rust uppercase">
+          <Eyebrow as="p" tone="rust" className="mt-5">
             — María del Carmen Reyes Garrido
-          </p>
+          </Eyebrow>
         </RevealOnScroll>
       </div>
       <GradientRule className="mt-8 md:mt-10" />

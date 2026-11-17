@@ -2,6 +2,12 @@ import React from "react";
 import Image from "next/image";
 import { RevealImage } from "@/components/Animations/reveal-image";
 import { RevealOnScroll } from "@/components/Animations/reveal-on-scroll";
+import {
+  Eyebrow,
+  LeadText,
+  MetaText,
+  SectionTitle,
+} from "@/components/Typography/typography";
 
 export interface GalleryPhoto {
   id: string;
@@ -733,23 +739,22 @@ export function PhotographyGallerySection({
             <div className="mx-auto w-full max-w-full px-6 md:px-11">
               {item.metaInfo && (
                 <RevealOnScroll>
-                  <p className="font-label text-[14px] tracking-[0.26em] text-rust uppercase">
+                  <Eyebrow as="p" tone="rust">
                     {item.metaInfo}
-                  </p>
+                  </Eyebrow>
                 </RevealOnScroll>
               )}
 
-              <RevealOnScroll delayMs={30}>
-                <h2 className="mt-2 font-display text-[32px] leading-[1.1] font-light text-ink sm:text-[40px] md:text-[48px]">
-                  {item.title}
-                </h2>
-              </RevealOnScroll>
+              <SectionTitle
+                lines={[<span key="title">{item.title}</span>]}
+                className="mt-2"
+              />
 
               {item.subtitle && (
                 <RevealOnScroll delayMs={50}>
-                  <p className="mt-2 max-w-162.5 text-[16px] leading-[1.8] text-taupe md:text-[18px]">
+                  <LeadText className="mt-3 max-w-162.5">
                     {item.subtitle}
-                  </p>
+                  </LeadText>
                 </RevealOnScroll>
               )}
 
@@ -779,11 +784,13 @@ export function PhotographyGallerySection({
                           delayMs={100 + (photoIndex % 4) * 40}
                           className={`px-4 py-3 ${captionBgClass} transition-colors duration-300`}
                         >
-                          <span
-                            className={`font-label text-[12px] tracking-[0.15em] uppercase block ${captionColorClass}`}
+                          <MetaText
+                            as="span"
+                            tone="current"
+                            className={`block font-label uppercase tracking-[0.15em] ${captionColorClass}`}
                           >
                             {photo.caption}
-                          </span>
+                          </MetaText>
                         </RevealOnScroll>
                       )}
                     </div>

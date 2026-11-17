@@ -1,7 +1,12 @@
 import React, { ReactNode } from "react";
 import Link from "next/link";
-import { MaskedLines } from "@/components/Animations/masked-lines";
 import { RevealOnScroll } from "@/components/Animations/reveal-on-scroll";
+import {
+  BodyText,
+  Eyebrow,
+  LeadText,
+  SectionTitle,
+} from "@/components/Typography/typography";
 
 export interface SeriesItem {
   id: string;
@@ -51,22 +56,17 @@ export function PhotographySeriesSection({
     <section id={id} className="w-full bg-white pt-12 pb-20 md:pt-16 md:pb-28">
       <div className="mx-auto w-full max-w-full px-6 md:px-11">
         <RevealOnScroll>
-          <div className="font-label text-[11px] tracking-[0.18em] text-muted-brown uppercase">
+          <Eyebrow as="div" tone="muted" className="tracking-[0.18em]">
             {breadcrumb}
-          </div>
+          </Eyebrow>
         </RevealOnScroll>
 
-        <MaskedLines
-          className="mt-6 font-display text-[36px] leading-[1.1] font-light text-ink sm:text-[46px] md:text-[54px]"
-          delayMs={60}
-          staggerMs={100}
-          lines={title}
-        />
+        <SectionTitle lines={title} className="mt-6" />
 
         <RevealOnScroll delayMs={60}>
-          <p className="mt-4 text-[18px] leading-[1.8] text-muted-brown md:text-[20px]">
+          <LeadText tone="muted" className="mt-5">
             {counterText}
-          </p>
+          </LeadText>
         </RevealOnScroll>
 
         <div className="mt-10 grid grid-cols-1 gap-4 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-5 md:mt-12">
@@ -74,11 +74,15 @@ export function PhotographySeriesSection({
             <RevealOnScroll key={item.id} delayMs={80 + index * 40}>
               <Link
                 href={item.href}
-                className="group flex h-14 w-full items-center justify-center bg-paper-light rounded-2xl bg-black/2.5] px-5  transition-all duration-300 hover:bg-paper"
+                className="group flex h-16 w-full items-center justify-center bg-paper-light rounded-2xl bg-black/2.5] px-5  transition-all duration-300 hover:bg-paper"
               >
-                <span className="font-display text-[15px] font-light text-ink transition-colors duration-300 group-hover:text-rust">
+                <BodyText
+                  as="span"
+                  tone="ink"
+                  className="font-display font-light transition-colors duration-300 group-hover:text-rust"
+                >
                   {item.name}
-                </span>
+                </BodyText>
               </Link>
             </RevealOnScroll>
           ))}

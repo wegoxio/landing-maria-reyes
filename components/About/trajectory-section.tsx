@@ -1,7 +1,12 @@
 import React, { ReactNode } from "react";
-import { MaskedLines } from "@/components/Animations/masked-lines";
 import { RevealOnScroll } from "@/components/Animations/reveal-on-scroll";
 import { GradientRule } from "@/components/Common/gradient-rule";
+import {
+  BodyText,
+  CardTitle,
+  Eyebrow,
+  SectionTitle,
+} from "@/components/Typography/typography";
 
 export interface TrajectoryItem {
   tagline: string;
@@ -64,23 +69,18 @@ export function TrajectorySection({
       <div className="mx-auto w-full max-w-full px-6 md:px-11">
         <RevealOnScroll>
           <div className="flex items-center gap-4">
-            <p className="font-label text-[11px] tracking-[0.26em] text-rust uppercase">
+            <Eyebrow as="p" tone="rust">
               {tagline}
-            </p>
+            </Eyebrow>
             <GradientRule className="h-px! max-w-22.5 " />
           </div>
           <GradientRule className="h-2! mt-4 max-w-37.5 rounded-2xl" />
         </RevealOnScroll>
-        <MaskedLines
-          className="mt-7 max-w-[650px] font-display text-[32px] leading-[1.12] font-light text-ink sm:text-[40px] md:text-[48px]"
-          delayMs={60}
-          staggerMs={100}
-          lines={lines}
-        />
+
+        <SectionTitle lines={lines} className="mt-7 max-w-[650px]" />
+
         <RevealOnScroll delayMs={80}>
-          <p className="mt-6 max-w-[950px] text-[14px] leading-[1.9] text-taupe md:text-[15px]">
-            {sectionDescription}
-          </p>
+          <BodyText className="mt-6 max-w-[950px]">{sectionDescription}</BodyText>
         </RevealOnScroll>
 
         <div className="mt-14 relative pl-6 md:pl-10 max-w-[1250px]">
@@ -95,15 +95,13 @@ export function TrajectorySection({
                       item.dotColor || "bg-rust"
                     }`}
                   />
-                  <p className="font-label text-[10px] sm:text-[11px] tracking-[0.24em] text-rust uppercase">
+                  <Eyebrow as="p" tone="rust">
                     {item.tagline}
-                  </p>
-                  <h3 className="mt-2 font-display text-[22px] sm:text-[26px] md:text-[30px] font-light text-ink">
-                    {item.title}
-                  </h3>
-                  <p className="mt-3 max-w-[1000px] text-[14px] leading-[1.9] text-taupe md:text-[15px]">
+                  </Eyebrow>
+                  <CardTitle className="mt-2">{item.title}</CardTitle>
+                  <BodyText className="mt-3 max-w-[1000px]">
                     {item.description}
-                  </p>
+                  </BodyText>
                 </div>
               </RevealOnScroll>
             ))}
