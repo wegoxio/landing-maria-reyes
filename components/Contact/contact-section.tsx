@@ -1,10 +1,16 @@
-import { MaskedLines } from "@/components/Animations/masked-lines";
 import { RevealOnScroll } from "@/components/Animations/reveal-on-scroll";
 import {
   CONTACT_INFO,
   CONTACT_LINKS,
 } from "@/components/Common/contact-links";
 import { ContactForm } from "@/components/Contact/contact-form";
+import {
+  BodyText,
+  CardTitle,
+  Eyebrow,
+  MetaText,
+  SectionTitle,
+} from "@/components/Typography/typography";
 
 const DIRECT_CHANNELS = [
   {
@@ -40,14 +46,13 @@ export function ContactSection() {
     <section id="formulario" className="w-full bg-paper py-20 md:py-28">
       <div className="mx-auto w-full max-w-full px-6 md:px-11">
         <RevealOnScroll>
-          <p className="font-label text-[11px] tracking-[0.3em] text-rust uppercase">
+          <Eyebrow as="p" tone="rust">
             Escríbeme
-          </p>
+          </Eyebrow>
         </RevealOnScroll>
 
-        <MaskedLines
-          className="mt-6 font-display text-[38px] leading-[1.05] font-light text-ink md:text-[52px]"
-          delayMs={60}
+        <SectionTitle
+          className="mt-6"
           lines={[
             <span key="1">Cuéntame lo que</span>,
             <span key="2" className="italic text-rust">
@@ -57,10 +62,10 @@ export function ContactSection() {
         />
 
         <RevealOnScroll delayMs={120}>
-          <p className="mt-7 max-w-[540px] text-[15px] leading-[1.8] text-taupe">
+          <BodyText className="mt-7 max-w-[600px]">
             Rellena el formulario y te responderé por correo. Si prefieres un
             trato directo, también puedes escribirme por WhatsApp.
-          </p>
+          </BodyText>
         </RevealOnScroll>
 
         <div className="mt-12 grid gap-8 md:grid-cols-[1.6fr_1fr] md:gap-12">
@@ -72,9 +77,9 @@ export function ContactSection() {
 
           <RevealOnScroll delayMs={240}>
             <aside className="h-full border border-ink/12 bg-paper-light p-6 md:p-9">
-              <p className="font-label text-[11px] tracking-[0.24em] text-rust uppercase">
+              <Eyebrow as="p" tone="rust">
                 Otros canales
-              </p>
+              </Eyebrow>
 
               <ul className="mt-6 space-y-6">
                 {DIRECT_CHANNELS.map((channel) => (
@@ -85,22 +90,22 @@ export function ContactSection() {
                       rel={channel.external ? "noopener noreferrer" : undefined}
                       className="group block border-b border-ink/10 pb-5 last:border-b-0 last:pb-0"
                     >
-                      <span className="block text-[16px] text-ink transition-colors group-hover:text-rust">
+                      <CardTitle as="span" className="block">
                         {channel.label}
-                      </span>
-                      <span className="mt-1 block text-[13px] text-taupe">
+                      </CardTitle>
+                      <MetaText as="span" tone="taupe" className="mt-1 block">
                         {channel.detail}
-                      </span>
+                      </MetaText>
                     </a>
                   </li>
                 ))}
               </ul>
 
-              <p className="mt-8 text-[13px] leading-[1.8] text-taupe">
+              <MetaText as="p" tone="taupe" className="mt-8">
                 Estudio de arte y diseño · Caracas
                 <br />
                 Escultura y fotografía.
-              </p>
+              </MetaText>
             </aside>
           </RevealOnScroll>
         </div>

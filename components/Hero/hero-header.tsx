@@ -18,7 +18,7 @@ type HeroHeaderProps = {
 };
 
 const NAV_LINK_BASE =
-  "nav-link font-nav text-[12px] tracking-[0.2em] uppercase transition-colors";
+  "nav-link font-nav text-label tracking-[0.18em] uppercase transition-colors";
 
 const PROJECTS_MENU = [
   { href: "/projects/sculptures", label: "Escultura", key: "sculptures" },
@@ -37,7 +37,7 @@ function navLinkClass(isActive: boolean) {
 }
 
 function dropdownItemClass(isActive: boolean) {
-  return `block px-5 py-2.5 font-label text-[11px] tracking-[0.18em] uppercase transition-colors ${
+  return `block px-5 py-3 font-label text-label tracking-[0.18em] uppercase transition-colors ${
     isActive
       ? "bg-paper-deep text-rust"
       : "text-ink/80 hover:bg-paper-deep hover:text-rust"

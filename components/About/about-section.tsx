@@ -1,8 +1,13 @@
 import React, { ReactNode } from "react";
 import Link from "next/link";
-import { MaskedLines } from "@/components/Animations/masked-lines";
 import { RevealOnScroll } from "@/components/Animations/reveal-on-scroll";
 import { GradientRule } from "@/components/Common/gradient-rule";
+import {
+  BUTTON_LABEL_CLASS,
+  BodyText,
+  Eyebrow,
+  SectionTitle,
+} from "@/components/Typography/typography";
 
 export interface DisciplineItem {
   name: string;
@@ -65,14 +70,18 @@ export function AboutSection({
       <div className="mx-auto w-full max-w-full px-6 md:px-11">
         <RevealOnScroll>
           {showTaglinePill ? (
-            <div className="inline-flex items-center justify-center rounded-full border border-ink/20 px-5 py-1.5 font-label text-[11px] tracking-[0.26em] text-ink uppercase">
+            <Eyebrow
+              as="div"
+              tone="ink"
+              className="inline-flex items-center justify-center rounded-full border border-ink/20 px-5 py-2"
+            >
               {tagline}
-            </div>
+            </Eyebrow>
           ) : (
             <div className="flex items-center gap-4">
-              <p className="font-label text-[11px] tracking-[0.26em] text-rust uppercase">
+              <Eyebrow as="p" tone="rust">
                 {tagline}
-              </p>
+              </Eyebrow>
               <span className="h-px flex-1 bg-ink/12 max-w-[90px]" />
             </div>
           )}
@@ -80,26 +89,19 @@ export function AboutSection({
         {eyebrow && (
           <RevealOnScroll delayMs={40}>
             <div className="mt-8">
-              <p className="font-label text-[11px] tracking-[0.24em] text-rust uppercase">
+              <Eyebrow as="p" tone="rust">
                 {eyebrow}
-              </p>
+              </Eyebrow>
               <GradientRule className="h-2! mt-3 max-w-[150px] rounded-2xl" />
             </div>
           </RevealOnScroll>
         )}
 
-        <MaskedLines
-          className="mt-7 max-w-[560px] font-display text-[30px] leading-[1.12] font-light text-ink sm:text-[34px] md:text-[40px]"
-          delayMs={60}
-          staggerMs={100}
-          lines={lines}
-        />
+        <SectionTitle lines={lines} className="mt-7 max-w-[620px]" />
 
         {descriptionTop.map((desc, idx) => (
           <RevealOnScroll key={`top-${idx}`} delayMs={80 + idx * 40}>
-            <p className="mt-8 max-w-[1100px] text-[14px] leading-[1.9] text-taupe md:text-[15px]">
-              {desc}
-            </p>
+            <BodyText className="mt-8 max-w-[1100px]">{desc}</BodyText>
           </RevealOnScroll>
         ))}
 
@@ -108,12 +110,12 @@ export function AboutSection({
             <div className="flex flex-col gap-y-4">
               {disciplines.map((discipline, index) => (
                 <RevealOnScroll key={discipline.name} delayMs={60 + index * 50}>
-                  <p className="text-[14px] md:text-[15px] text-ink">
-                    <strong className="font-medium text-ink">
+                  <BodyText tone="ink">
+                    <strong className="font-semibold text-ink">
                       {discipline.name}
                     </strong>{" "}
                     — {discipline.detail}
-                  </p>
+                  </BodyText>
                 </RevealOnScroll>
               ))}
             </div>
@@ -124,12 +126,12 @@ export function AboutSection({
             <div className="flex flex-wrap gap-x-16 gap-y-8 pt-9">
               {disciplines.map((discipline, index) => (
                 <RevealOnScroll key={discipline.name} delayMs={60 + index * 70}>
-                  <p className="font-label text-[11px] tracking-[0.24em] text-rust uppercase">
+                  <Eyebrow as="p" tone="rust">
                     {discipline.name}
-                  </p>
-                  <p className="mt-2 text-[14px] text-ink md:text-[15px]">
+                  </Eyebrow>
+                  <BodyText tone="ink" className="mt-2">
                     {discipline.detail}
-                  </p>
+                  </BodyText>
                 </RevealOnScroll>
               ))}
             </div>
@@ -138,9 +140,7 @@ export function AboutSection({
 
         {descriptionBottom.map((desc, idx) => (
           <RevealOnScroll key={`bottom-${idx}`} delayMs={100 + idx * 40}>
-            <p className="mt-8 max-w-[1100px] text-[14px] leading-[1.9] text-taupe md:text-[15px]">
-              {desc}
-            </p>
+            <BodyText className="mt-8 max-w-[1100px]">{desc}</BodyText>
           </RevealOnScroll>
         ))}
 
@@ -149,7 +149,7 @@ export function AboutSection({
             <a
               href={actionHref}
               download
-              className={`mt-10 flex h-14 w-full max-w-[320px] items-center justify-between px-6 font-label text-[11px] tracking-[0.24em] text-ink uppercase transition-colors duration-300 hover:bg-ink hover:text-paper md:mt-12 ${classNameAction}`}
+              className={`mt-10 flex h-14 w-full max-w-[340px] items-center justify-between px-6 ${BUTTON_LABEL_CLASS} text-ink transition-colors duration-300 hover:bg-ink hover:text-paper md:mt-12 ${classNameAction}`}
               style={{ border: "1px solid rgba(27, 20, 16, 0.22)" }}
             >
               <span>{actionLabel}</span>
@@ -174,7 +174,7 @@ export function AboutSection({
           ) : (
             <Link
               href={actionHref}
-              className={`mt-10 flex h-14 w-full items-center justify-between px-6 font-label text-[11px] tracking-[0.24em] text-ink uppercase transition-colors duration-300 hover:bg-ink hover:text-paper md:mt-12 ${classNameAction}`}
+              className={`mt-10 flex h-14 w-full items-center justify-between px-6 ${BUTTON_LABEL_CLASS} text-ink transition-colors duration-300 hover:bg-ink hover:text-paper md:mt-12 ${classNameAction}`}
               style={{ border: "1px solid rgba(27, 20, 16, 0.22)" }}
             >
               <span>{actionLabel}</span>

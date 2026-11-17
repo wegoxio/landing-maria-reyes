@@ -1,8 +1,15 @@
 import Image from "next/image";
 import Link from "next/link";
-import { MaskedLines } from "@/components/Animations/masked-lines";
 import { RevealImage } from "@/components/Animations/reveal-image";
 import { RevealOnScroll } from "@/components/Animations/reveal-on-scroll";
+import {
+  BUTTON_LABEL_CLASS,
+  BodyText,
+  CardTitle,
+  Eyebrow,
+  SectionTitle,
+  Subtitle,
+} from "@/components/Typography/typography";
 
 const COLECCION = [
   {
@@ -72,15 +79,13 @@ export function PlatformSection() {
       <div className="mx-auto w-full max-w-full px-6 md:px-11">
         <div className="flex flex-col items-center text-center">
           <RevealOnScroll>
-            <p className="font-label text-[11px] tracking-[0.26em] text-rust uppercase">
+            <Eyebrow as="p" tone="rust">
               Fotografía · Escultura
-            </p>
+            </Eyebrow>
           </RevealOnScroll>
 
-          <MaskedLines
-            className="mt-7 font-display text-[30px] leading-[1.12] font-light text-ink sm:text-[36px] md:text-[42px]"
-            delayMs={60}
-            staggerMs={100}
+          <SectionTitle
+            className="mt-7"
             lines={[
               <span key="formas">Dos formas de</span>,
               <span key="observar">
@@ -90,10 +95,10 @@ export function PlatformSection() {
           />
 
           <RevealOnScroll delayMs={120}>
-            <p className="mt-7 max-w-[620px] text-[14px] leading-[1.8] text-taupe md:text-[15px]">
+            <BodyText className="mt-7 max-w-[620px]">
               Cada escultura y cada imagen nacen de la observación, la
               sensibilidad y el proceso.
-            </p>
+            </BodyText>
           </RevealOnScroll>
         </div>
         <div
@@ -123,17 +128,13 @@ export function PlatformSection() {
                 delayMs={100 + index * 70}
                 className="flex flex-1 flex-col px-1 pt-5"
               >
-                <p className="font-label text-[15px] tracking-[0.24em] text-rust uppercase">
+                <Eyebrow as="p" tone="rust">
                   {item.label}
-                </p>
+                </Eyebrow>
 
-                <h3 className="mt-2 font-display text-[28px] leading-tight font-light text-ink md:text-[24px]">
-                  {item.title}
-                </h3>
+                <CardTitle className="mt-2">{item.title}</CardTitle>
 
-                <p className="mt-2 text-[15px] leading-[1.7] text-taupe">
-                  {item.description}
-                </p>
+                <BodyText className="mt-2">{item.description}</BodyText>
               </RevealOnScroll>
             </article>
           ))}
@@ -142,7 +143,7 @@ export function PlatformSection() {
         <RevealOnScroll delayMs={110}>
           <Link
             href="/projects/sculptures"
-            className="mt-12 flex h-12 w-full items-center justify-center border border-ink/20 font-label text-[15px] tracking-[0.24em] text-ink uppercase transition-colors duration-300 hover:border-rust hover:bg-rust hover:text-paper md:mt-14"
+            className={`mt-12 flex h-14 w-full items-center justify-center border border-ink/20 ${BUTTON_LABEL_CLASS} text-ink transition-colors duration-300 hover:border-rust hover:bg-rust hover:text-paper md:mt-14`}
           >
             Ver colección de esculturas
           </Link>
@@ -150,19 +151,17 @@ export function PlatformSection() {
         <div className="mt-20 md:mt-28">
           <RevealOnScroll>
             <div className="max-w-[700px]">
-              <p className="font-label text-[12px] tracking-[0.24em] text-rust uppercase">
+              <Eyebrow as="p" tone="rust">
                 FOTOGRAFÍA &nbsp;·&nbsp; MARÍA REYES
-              </p>
+              </Eyebrow>
 
-              <h3 className="mt-3 font-display text-[30px] leading-tight font-light text-ink md:text-[34px]">
-                La luz también es materia
-              </h3>
+              <Subtitle className="mt-3">La luz también es materia</Subtitle>
 
-              <p className="mt-4 text-[15px] leading-[1.8] text-taupe md:text-[16px]">
+              <BodyText className="mt-4">
                 Paisajes, encuentros y vida cotidiana. Una mirada que recorre
                 territorios y descubre nuevas relaciones entre la forma, la luz
                 y el tiempo.
-              </p>
+              </BodyText>
             </div>
           </RevealOnScroll>
 
@@ -178,9 +177,11 @@ export function PlatformSection() {
                 />
               </RevealImage>
 
-              <div className="mt-3 flex flex-wrap items-center gap-x-8 gap-y-1 text-[12px] tracking-[0.15em] font-label uppercase">
-                <span className="text-rust">UTAH &nbsp;·&nbsp; 2022</span>
-                <span className="text-taupe text-[12px] tracking-normal">
+              <div className="mt-3 flex flex-wrap items-center gap-x-8 gap-y-1 font-label uppercase">
+                <Eyebrow as="span" tone="rust">
+                  UTAH &nbsp;·&nbsp; 2022
+                </Eyebrow>
+                <span className="text-meta tracking-normal text-taupe">
                   Curvas, estratos y luz en el interior del cañón.
                 </span>
               </div>
@@ -205,15 +206,11 @@ export function PlatformSection() {
                   />
                 </RevealImage>
                 <RevealOnScroll delayMs={100 + index * 70} className="mt-4">
-                  <p className="font-label text-[14px] tracking-[0.2em] text-rust uppercase">
+                  <Eyebrow as="p" tone="rust">
                     {photo.year}
-                  </p>
-                  <h4 className="mt-1 font-display text-[22px] font-light text-ink">
-                    {photo.title}
-                  </h4>
-                  <p className="mt-2 text-[15px] leading-[1.7] text-taupe">
-                    {photo.description}
-                  </p>
+                  </Eyebrow>
+                  <CardTitle className="mt-1">{photo.title}</CardTitle>
+                  <BodyText className="mt-2">{photo.description}</BodyText>
                 </RevealOnScroll>
               </article>
             ))}
@@ -222,7 +219,7 @@ export function PlatformSection() {
           <RevealOnScroll delayMs={120}>
             <Link
               href="/projects/photography"
-              className="mt-14 flex h-12 w-full items-center justify-center border border-ink/20 font-label text-[15px] tracking-[0.24em] text-ink uppercase transition-colors duration-300 hover:border-rust hover:bg-rust hover:text-paper"
+              className={`mt-14 flex h-14 w-full items-center justify-center border border-ink/20 ${BUTTON_LABEL_CLASS} text-ink transition-colors duration-300 hover:border-rust hover:bg-rust hover:text-paper`}
             >
               Ver galería fotográfica
             </Link>

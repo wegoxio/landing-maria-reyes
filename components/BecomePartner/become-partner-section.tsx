@@ -1,7 +1,12 @@
 import Link from "next/link";
-import { MaskedLines } from "@/components/Animations/masked-lines";
 import { RevealOnScroll } from "@/components/Animations/reveal-on-scroll";
 import { CONTACT_LINKS, CONTACT_PAGE_PATH } from "@/components/Common/contact-links";
+import {
+  BUTTON_LABEL_CLASS,
+  BodyText,
+  Eyebrow,
+  SectionTitle,
+} from "@/components/Typography/typography";
 
 type BecomePartnerSectionProps = {
   /** Texto del botón de llamada a la acción. */
@@ -14,7 +19,7 @@ type BecomePartnerSectionProps = {
 
 function WhatsAppIcon() {
   return (
-    <svg viewBox="0 0 24 24" className="h-4 w-4" fill="none" aria-hidden>
+    <svg viewBox="0 0 24 24" className="h-5 w-5" fill="none" aria-hidden>
       <path
         d="M20 11.5a8 8 0 0 1-11.9 7L4 20l1.6-3.9A8 8 0 1 1 20 11.5Z"
         stroke="currentColor"
@@ -43,22 +48,21 @@ export function BecomePartnerSection({
 
       <div className="relative mx-auto flex w-full max-w-full flex-col items-center px-6 text-center">
         <RevealOnScroll>
-          <p className="font-label text-[11px] tracking-[0.3em] text-rust uppercase">
+          <Eyebrow as="p" tone="rust">
             El proceso empieza aquí
-          </p>
+          </Eyebrow>
         </RevealOnScroll>
 
-        <MaskedLines
-          className="mt-6 font-display text-[48px] leading-none font-light text-paper sm:text-[58px] md:text-[68px]"
-          delayMs={60}
-          lines={["¡Hablemos!"]}
-        />
+        <SectionTitle lines={["¡Hablemos!"]} className="mt-6 text-paper" />
 
         <RevealOnScroll delayMs={120}>
-          <p className="mt-6 max-w-[480px] text-[15px] leading-[1.8] text-paper/65 md:text-[15px]">
+          <BodyText
+            tone="current"
+            className="mt-6 max-w-[520px] text-paper/70"
+          >
             Cada colaboración comienza con una conversación: ideas, referencias
             y una mirada compartida.
-          </p>
+          </BodyText>
         </RevealOnScroll>
 
         <RevealOnScroll delayMs={200}>
@@ -66,7 +70,7 @@ export function BecomePartnerSection({
             href={ctaHref}
             target="_blank"
             rel="noopener noreferrer"
-            className="mt-9 inline-flex h-14 items-center gap-3 border border-paper/30 px-8 font-label text-[11px] tracking-[0.22em] text-paper uppercase transition-colors duration-300 hover:border-rust hover:bg-rust"
+            className={`mt-9 inline-flex h-14 items-center gap-3 border border-paper/30 px-8 ${BUTTON_LABEL_CLASS} text-paper transition-colors duration-300 hover:border-rust hover:bg-rust`}
           >
             <WhatsAppIcon />
             {ctaLabel}
@@ -76,7 +80,7 @@ export function BecomePartnerSection({
         <RevealOnScroll delayMs={260}>
           <Link
             href={CONTACT_PAGE_PATH}
-            className="mt-6 inline-block font-label text-[11px] tracking-[0.22em] text-paper/60 uppercase underline decoration-paper/30 underline-offset-[6px] transition-colors duration-300 hover:text-rust hover:decoration-rust"
+            className={`mt-6 inline-block ${BUTTON_LABEL_CLASS} text-paper/65 underline decoration-paper/30 underline-offset-[6px] transition-colors duration-300 hover:text-rust hover:decoration-rust`}
           >
             O escríbeme por el formulario
           </Link>

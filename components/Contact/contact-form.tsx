@@ -5,19 +5,23 @@ import {
   sendContactMessage,
   type ContactFormState,
 } from "@/app/contacto/actions";
+import {
+  BUTTON_LABEL_CLASS,
+  FIELD_LABEL_CLASS,
+  MetaText,
+} from "@/components/Typography/typography";
 
 const INITIAL_STATE: ContactFormState = {
   status: "idle",
   message: "",
 };
 
-const LABEL_CLASS =
-  "font-label text-[11px] tracking-[0.24em] uppercase text-rust";
+const LABEL_CLASS = FIELD_LABEL_CLASS;
 
 const INPUT_CLASS =
-  "mt-3 w-full border bg-paper-light px-4 py-3 text-[15px] text-ink outline-none transition-colors placeholder:text-taupe/70 focus:border-rust";
+  "mt-3 w-full border bg-paper-light px-4 py-3.5 text-body text-ink outline-none transition-colors placeholder:text-taupe/70 focus:border-rust";
 
-const ERROR_CLASS = "mt-2 text-[13px] text-rust";
+const ERROR_CLASS = "mt-2 text-meta text-rust";
 
 /**
  * Formulario de contacto.
@@ -149,20 +153,21 @@ export function ContactForm() {
         <button
           type="submit"
           disabled={pending}
-          className="inline-flex h-14 items-center justify-center border border-ink/25 px-8 font-label text-[11px] tracking-[0.22em] text-ink uppercase transition-colors duration-300 hover:border-rust hover:bg-rust hover:text-paper disabled:cursor-not-allowed disabled:opacity-60 disabled:hover:border-ink/25 disabled:hover:bg-transparent disabled:hover:text-ink"
+          className={`inline-flex h-14 items-center justify-center border border-ink/25 px-8 ${BUTTON_LABEL_CLASS} text-ink transition-colors duration-300 hover:border-rust hover:bg-rust hover:text-paper disabled:cursor-not-allowed disabled:opacity-60 disabled:hover:border-ink/25 disabled:hover:bg-transparent disabled:hover:text-ink`}
         >
           {pending ? "Enviando…" : "Enviar mensaje"}
         </button>
 
-        <p
+        <MetaText
+          as="p"
+          tone="taupe"
           aria-live="polite"
           role="status"
-          className="text-[13px] text-taupe"
         >
           {pending
             ? "Enviando tu mensaje…"
             : (state.message ?? "")}
-        </p>
+        </MetaText>
       </div>
     </form>
   );
