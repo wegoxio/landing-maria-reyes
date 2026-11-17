@@ -11,12 +11,12 @@ export type ContactMessage = {
 /**
  * Acuse de recibo: el correo que recibe quien rellenó el formulario.
  *
- * Confirma que el mensaje llegó y reproduce lo que envió, para que quien
- * escribió vea exactamente lo que el estudio tiene delante.
+ * Solo confirma que el mensaje llegó. El texto que escribió la persona no
+ * se reproduce aquí: ese contenido llega al estudio por separado y volver a
+ * mostrarlo en el acuse solo alarga el correo sin aportar nada.
  */
 export function contactReceivedTemplate({
   name,
-  reason,
 }: ContactMessage): MailContent {
   const preheader = `Gracias por escribirnos, ${name}. Tu solicitud fue recibida.`;
 
@@ -28,31 +28,12 @@ export function contactReceivedTemplate({
       Hola ${escapeHtml(name)}, tu solicitud fue recibida. Ya está en nuestra
       bandeja y te responderé en cuanto pueda.
     </p>
-
-    <table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="margin-top:24px;">
-      <tr>
-        <td style="${MAIL_STYLES.card}">
-          <p style="${MAIL_STYLES.label}">Lo que nos escribiste</p>
-          <p style="${MAIL_STYLES.value}">${escapeMultiline(reason)}</p>
-        </td>
-      </tr>
-    </table>
-
-    <p style="${MAIL_STYLES.paragraph}">
-      Si necesitas añadir algo, simplemente responde a este correo.
-    </p>
   `;
 
   const text = [
     `Hola ${name},`,
     "",
     "Tu solicitud fue recibida. Ya está en nuestra bandeja y te responderé en cuanto pueda.",
-    "",
-    "Lo que nos escribiste:",
-    "",
-    reason,
-    "",
-    "Si necesitas añadir algo, simplemente responde a este correo.",
     "",
     "María del Carmen Reyes Garrido",
     "Estudio de arte y diseño · Caracas",
