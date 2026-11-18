@@ -1,3 +1,4 @@
+import type { Metadata } from "next";
 import { HeroShell } from "@/components/Hero/hero-shell";
 import { HeroSection } from "@/components/Hero/hero-section";
 import { HeroMediaBand } from "@/components/Hero/hero-media-band";
@@ -7,6 +8,14 @@ import { FooterSection } from "@/components/Footer/footer-section";
 import { GradientRule } from "@/components/Common/gradient-rule";
 import { LanguagesSection } from "@/components/About/languages-section";
 import { TrajectorySection } from "@/components/About/trajectory-section";
+import { pageMetadata } from "@/app/seo";
+
+export const metadata: Metadata = pageMetadata({
+  path: "/about",
+  title: "Sobre mí",
+  description:
+    "Biografía y trayectoria de María del Carmen Reyes Garrido: escultora y fotógrafa en Caracas. Su práctica explora la relación entre la materia, la forma y la observación.",
+});
 
 export default function AboutPage() {
   return (

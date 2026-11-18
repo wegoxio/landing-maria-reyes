@@ -1,8 +1,17 @@
+import type { Metadata } from "next";
 import { FooterSection } from "@/components/Footer/footer-section";
 import { HeroSection } from "@/components/Hero/hero-section";
 import { HeroShell } from "@/components/Hero/hero-shell";
 import { PhotographyGallerySection } from "@/components/project/photography/photography-gallery-section";
 import { PhotographySeriesSection } from "@/components/project/photography/photography-series-section";
+import { pageMetadata } from "@/app/seo";
+
+export const metadata: Metadata = pageMetadata({
+  path: "/projects/photography",
+  title: "Fotografía",
+  description:
+    "Diez series fotográficas de María del Carmen Reyes: paisajes, encuentros y vida cotidiana vistas desde una mirada propia.",
+});
 
 export default function PhotographyPage() {
   return (

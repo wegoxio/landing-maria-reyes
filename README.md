@@ -85,7 +85,12 @@ app/
     photography/page.tsx # Series fotográficas y galería de 120 imágenes
     sculptures/page.tsx  # Catálogo de la colección de esculturas
   globals.css           # Tokens, animaciones y estilos base
-  icon.svg              # Favicon
+  seo.ts                # Datos del estudio y metadatos por página
+  icon.svg              # Favicon SVG (pestaña del navegador)
+  icon.png              # Icono 512x512 (Android, PWA y buscadores)
+  apple-icon.png        # Icono 180x180 para iOS
+  favicon.ico           # Favicon clásico (16, 32 y 48 px)
+  manifest.ts           # Manifiesto de la aplicación (PWA)
 components/
   About/                # "Sobre mí" de la landing
   Animations/           # Primitivas de movimiento (ver abajo)
@@ -220,6 +225,45 @@ El botón «Descarga mi currículum» apunta a
 nombre exacto; si lo renumeras, hay que cambiar el `actionHref` de
 `app/about/page.tsx`.
 
+## Iconos y SEO
+
+La marca se ve en el navegador y en los buscadores gracias a los archivos
+convencionales de Next.js: Next.js los evalúa al compilar y añade las
+etiquetas al `<head>` sin tocar el código.
+
+| Archivo | Etiqueta que genera | Dónde se ve |
+| --- | --- | --- |
+| `app/icon.svg` | `<link rel="icon" type="image/svg+xml">` | Pestaña del navegador (nítido a cualquier tamaño) |
+| `app/icon.png` | `<link rel="icon" type="image/png" sizes="512x512">` | Android, PWA y resultados de búsqueda |
+| `app/apple-icon.png` | `<link rel="apple-touch-icon" sizes="180x180">` | iPhone e iPad (pantalla de inicio) |
+| `app/favicon.ico` | `<link rel="icon" href="/favicon.ico">` | Navegadores antiguos (16, 32 y 48 px) |
+| `app/manifest.ts` | `<link rel="manifest">` | Instalación como aplicación |
+| `public/brand/og-image.png` | `<meta property="og:image">` | Vista previa al compartir en Facebook, LinkedIn, WhatsApp y X |
+| `public/brand/icon-192.png` y `icon-512.png` | `icons` del manifiesto | Instalación como aplicación |
+
+La imagen de compartir es `public/brand/og-image.png` (1200x630) y se declara
+en `app/seo.ts`, no como archivo de `app/`. La razón es concreta: cuando una
+página define su propio objeto `openGraph`, Next.js lo sustituye entero y la
+imagen que aporta un archivo `app/opengraph-image.png` se pierde. Al
+declararla en el código, todas las rutas llevan la suya.
+
+El texto alternativo de la imagen (`og:image:alt` y `twitter:image:alt`) es el
+que leen los lectores de pantalla y los buscadores.
+
+El resto de los metadatos —título, descripción, palabras clave, URL canónica
+y directivas para robots— se declaran en `app/layout.tsx` (lo común a todo el
+sitio) y en cada página con el ayudante `pageMetadata()` de `app/seo.ts`. La
+URL canónica se define **por página**, nunca en el layout raíz: si estuviera
+en el layout, todas las rutas reclamarían la portada como su dirección
+canónica.
+
+> **Importante:** las URL canónicas y la imagen de compartir necesitan una
+> URL absoluta, y esa base sale de `NEXT_PUBLIC_SITE_URL`
+> (`https://mcarmenreyes.com`). Si no se define, cae a
+> `http://localhost:3000`: en producción el valor tiene que estar en la
+> variable de entorno, o los buscadores indexarían URLs de `localhost` y las
+> vistas previas no cargarían la imagen.
+
 ## Contacto
 
 El enlace «Contacto» de la cabecera, del menú móvil y del pie lleva a
@@ -285,6 +329,7 @@ Copia `.env.example` a `.env.local` y rellena la clave que se crea en
 NEXT_PUBLIC_SITE_EMAIL=mcarmenreyes@gmail.com
 NEXT_PUBLIC_SITE_PHONE=+58 412 607 4961
 NEXT_PUBLIC_WHATSAPP_NUMBER=584126074961
+NEXT_PUBLIC_SITE_URL=https://mcarmenreyes.com
 
 # Envío con Resend (solo el servidor)
 RESEND_API_KEY=re_...
@@ -300,13 +345,14 @@ RESEND_FROM_EMAIL=Estudio <onboarding@resend.dev>
 | `NEXT_PUBLIC_SITE_EMAIL` | No | `mcarmenreyes@gmail.com` |
 | `NEXT_PUBLIC_SITE_PHONE` | No | `+58 412 607 4961` |
 | `NEXT_PUBLIC_WHATSAPP_NUMBER` | No | `584126074961` |
+| `NEXT_PUBLIC_SITE_URL` | Sí | `http://localhost:3000` |
 
 > `onboarding@resend.dev` es la dirección de prueba de Resend: **solo entrega
 > al correo de la cuenta de Resend**. Con ella el acuse de recibo a un
 > visitante externo tampoco llega. Para que los dos correos lleguen a
 > cualquier destinatario hay que verificar el dominio en Resend y poner aquí
 > una dirección propia, por ejemplo
-> `Estudio María Reyes <contacto@tudominio.com>`.
+> `Estudio María Reyes <contacto@mcarmenreyes.com>`.
 
 Las variables con prefijo `NEXT_PUBLIC_` se incrustan en el navegador al
 compilar: si las cambias, hay que volver a compilar para que se vean.
