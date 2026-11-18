@@ -4,12 +4,14 @@ import { GradientRule } from "@/components/Common/gradient-rule";
 import { FooterSection } from "@/components/Footer/footer-section";
 import { HeroSection } from "@/components/Hero/hero-section";
 import { HeroShell } from "@/components/Hero/hero-shell";
+import { pageMetadata } from "@/app/seo";
 
-export const metadata: Metadata = {
+export const metadata: Metadata = pageMetadata({
+  path: "/contacto",
   title: "Contacto",
   description:
     "Escríbele a María del Carmen Reyes: encargos, colaboraciones, prensa y propuestas de escultura y fotografía.",
-};
+});
 
 export default function ContactPage() {
   return (

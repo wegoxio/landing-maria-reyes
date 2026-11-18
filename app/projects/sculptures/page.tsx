@@ -1,3 +1,4 @@
+import type { Metadata } from "next";
 import { HeroSection } from "@/components/Hero/hero-section";
 import { GradientRule } from "@/components/Common/gradient-rule";
 import { HeroShell } from "@/components/Hero/hero-shell";
@@ -7,6 +8,14 @@ import { SculpturesGridSection } from "@/components/project/sculptures/sculpture
 import { HeroMediaBand } from "@/components/Hero/hero-media-band";
 import { SculptureDetailsSection } from "@/components/project/sculptures/sculpture-details-section";
 import { SculptureFlipProvider } from "@/components/project/sculptures/sculpture-flip-context";
+import { pageMetadata } from "@/app/seo";
+
+export const metadata: Metadata = pageMetadata({
+  path: "/projects/sculptures",
+  title: "Esculturas",
+  description:
+    "Colección de esculturas de María del Carmen Reyes Garrido: volúmenes, curvas y vacíos que exploran la forma y su relación con la luz.",
+});
 
 export default function SculpturesPage() {
   return (
